@@ -1,4 +1,4 @@
-# Nome do Jogo
+# 🔥 COBRINHA.ZIP 😝🤟
 
 Projeto final da disciplina de Introdução a Algoritmos/Programação, desenvolvido com Python e Pygame.
 
