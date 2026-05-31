@@ -2,63 +2,49 @@
 
 Projeto final da disciplina de Introdução a Algoritmos/Programação, desenvolvido com Python e Pygame.
 
-Este repositório é um template para os grupos da disciplina. A proposta é começar com uma base funcional e evoluir o jogo ao longo do semestre.
-
 ## Integrantes do grupo
 
-- Nome do integrante 1
-- Nome do integrante 2
-- Nome do integrante 3
-- Nome do integrante 4
+- Nome 1: Abner Cordeiro de Almeida
+- Nome 2: Larissa Cravo Carvalho Camara Santos
+- Nome 3: Letícia Xavier Abreu
+- Nome 4: Mayra Luiza Santos da Silva
 
 ## Estrutura do projeto
 
-- `main.py`: ponto de entrada da aplicação.
-- `src/`: código-fonte principal do jogo (loop, regras, sprites e dados).
-- `assets/`: imagens, fontes e sons.
-- `data/`: arquivos persistentes (recorde/ranking).
-- `tests/`: testes unitários com `pytest`.
-- `docs/`: documentação do projeto, incluindo proposta inicial.
+> - `main.py`: inicia o jogo;
+>- `src/jogo.py`: contém o loop principal;
+> - `src/config.py`: guarda configurações como tamanho da tela e cores;
+> - `src/funcoes.py`: contém funções auxiliares;
+> - `src/dados.py`: contém funções de leitura e escrita de arquivos.
 
 ## Descrição do jogo
 
 Descreva brevemente a ideia principal do jogo.
 
-Exemplo:
-
-> O jogo consiste em controlar um personagem que deve coletar moedas e evitar obstáculos. O jogador ganha pontos ao coletar itens e perde vidas ao colidir com obstáculos. A partida termina quando o tempo acaba ou quando o jogador perde todas as vidas.
+> Nosso jogo será um snake game, em que o jogador poderá escolher a cor da sua cobra, ver sua pontuação máxima, iniciar o jogo, ou sair do jogo. Já na tela da gameplay, o jogador controlará uma cobra que coleta frutinhas, e cresce junto com a quantidade frutinhas ingeridas. Os desafios da partida são não encostar em si mesmo e nem nas extremidades da tela.
 
 ## Objetivo do jogador
 
 Explique o que o jogador precisa fazer para vencer ou avançar no jogo.
-
-Exemplo:
-
-> O objetivo é coletar a maior quantidade possível de itens antes que o tempo acabe, evitando colisões com os obstáculos.
+> O objetivo é coletar a maior quantidade possível de frutinhas, evitando colisões com as extremidades da área de movimentação ou consigo mesmo.
 
 ## Regras do jogo
 
-Liste as principais regras do jogo.
-
-Exemplo:
-
-- O jogador se movimenta usando as setas do teclado.
-- Cada item coletado aumenta a pontuação.
-- Colidir com um obstáculo reduz a quantidade de vidas.
-- A partida termina quando o jogador perde todas as vidas ou quando o tempo acaba.
+- Regra 1: O Jogador começa com 3 três blocos de corpo
+- Regra 2: O Jogador não deve encostar nas bordas da área de movimentação
+- Regra 3: O Jogador não deve encostar em si mesmo
+- Regra 4: Cada frutinha vale 10 ponto e adiciona 1 bloco de corpo
+- Regra 5: As frutas especiais valem 50 pontos e retira 1 bloco ao corpo (aparecem somente 5 segundos)
 
 ## Controles
 
 Informe as teclas ou comandos utilizados no jogo.
 
-Exemplo:
-
 - Seta para cima: mover para cima
 - Seta para baixo: mover para baixo
 - Seta para esquerda: mover para esquerda
 - Seta para direita: mover para direita
-- Espaço: realizar ação
-- ESC: sair do jogo
+- ESC: Pausar o jogo
 
 ## Como executar o projeto
 

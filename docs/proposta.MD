@@ -73,7 +73,7 @@ Exemplos:
 
 Objetivo:
 
-> Coletar o maior número de frutinhas, sobreviver o maior tempo possível e não morrer..
+> Coletar o maior número de frutinhas, sobreviver o maior tempo possível e não morrer.
 
 ## 6. Regras principais
 
