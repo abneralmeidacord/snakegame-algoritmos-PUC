@@ -5,6 +5,7 @@ from src.config import (
     ALTURA_TELA,
     FPS,
     TITULO_JOGO,
+    TAMANHO_PIXEL,
     CINZA,
     CAMINHO_RECORDE,
     CAMINHO_SPRITES,
@@ -16,6 +17,7 @@ from src.funcoes import (
     limitar_valor,
     verificar_colisao,
     tomar_dano,
+    gerar_posicao_aleatoria,
 )
 from src.sprites import pegar_sprite
 from src.dados import (
@@ -41,8 +43,8 @@ def executar_jogo():
     # Jogador: usando tamanho 110x110 para capturar o quadrado perfeitamente
     player_image = pegar_sprite(CAMINHO_SPRITES, x=110, y=120, width=190, height=190, scale=0.5)
 
-    # Gema pequena: usando tamanho 64x64
-    gem_image    = pegar_sprite(CAMINHO_SPRITES, x=900, y=690, width=200, height=200, scale=0.5)
+    # Fruta
+    fruit_image = pegar_sprite(CAMINHO_SPRITES, x=500, y=830, width=TAMANHO_PIXEL, height=TAMANHO_PIXEL, scale=0.5)
 
     # Morcego: usando tamanho 180x120 por causa das asas abertas
     bat_image    = pegar_sprite(CAMINHO_SPRITES, x=905, y=1060, width=200, height=130, scale=0.5)
@@ -53,9 +55,11 @@ def executar_jogo():
         "rect": player_image.get_rect(topleft=(100, 100))
     }
 
-    gema = {
-        "imagem": gem_image,
-        "rect": gem_image.get_rect(topleft=(500, 300))
+    #Tirei a inicialização com posição fixa -> Antes: primeira fruta iniciava em uma posição fixa / Agora: Começa em uma posição aleatória
+    #Também podemos tirar para deixar uma cor única (sem imagem/sprite)
+    fruit = {
+        "imagem": fruit_image, 
+        "rect": fruit_image.get_rect(topleft=gerar_posicao_aleatoria(LARGURA_TELA, ALTURA_TELA, TAMANHO_PIXEL, TAMANHO_PIXEL)) 
     }
     
     inimigo = {
@@ -92,19 +96,16 @@ def executar_jogo():
         jogador["rect"].x = limitar_valor(jogador["rect"].x, 0, LARGURA_TELA - jogador["rect"].width)
         jogador["rect"].y = limitar_valor(jogador["rect"].y, 0, ALTURA_TELA - jogador["rect"].height)
 
-        # Verificação de colisão com a Gema (antigo 'item')
-        if verificar_colisao(jogador["rect"], gema["rect"]):
+        # Verificação de colisão com a fruta
+        if verificar_colisao(jogador["rect"], fruit["rect"]):
             pontos = calcular_pontos(pontos, 10)
 
-            # Move a gema de lugar ao coletar
-            gema["rect"].x += 80
-            gema["rect"].y += 50
+            # A função usa a largura e altura da tela para gerar as coordenadas, portanto não tem necessidade de verificar se essas posições estão dentro da área da tela. 
+            # Além disso, a posição aleátoria não deixa óbvio onde a próxima fruta irá aparecer
+            x, y = gerar_posicao_aleatoria(LARGURA_TELA, ALTURA_TELA, TAMANHO_PIXEL, TAMANHO_PIXEL)
+            fruit["rect"].x = x
+            fruit["rect"].y = y
 
-            # Se a gema sair da tela, volta para uma posição segura
-            if gema["rect"].x > LARGURA_TELA - gema["rect"].width:
-                gema["rect"].x = 50
-            if gema["rect"].y > ALTURA_TELA - gema["rect"].height:
-                gema["rect"].y = 50
 
         # Verificação de colisão com o Inimigo
         if verificar_colisao(jogador["rect"], inimigo["rect"]):
@@ -134,7 +135,7 @@ def executar_jogo():
         tela.fill(CINZA)
 
         # Desenhando os elementos na tela passando a imagem e o rect de cada dicionário
-        tela.blit(gema["imagem"], gema["rect"])
+        tela.blit(fruit["imagem"], fruit["rect"])
         tela.blit(inimigo["imagem"], inimigo["rect"])
         tela.blit(jogador["imagem"], jogador["rect"])
 
