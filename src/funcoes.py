@@ -1,4 +1,5 @@
 import random
+import config
 
 def calcular_pontos(pontos_atual, pontos_ganhos):
     """Soma os pontos ganhos à pontuação atual."""
@@ -34,3 +35,12 @@ def gerar_posicao_aleatoria(largura, altura, largura_sprite, altura_sprite):
     y = random.randint(0, altura-altura_sprite)
 
     return x, y
+
+def verificar_colisao_borda(rect):
+    """Verifica se a cabeça da cobra colidiu com uma das bordas da tela."""
+    return (
+        rect.left < 0 or
+        rect.top < 0 or
+        rect.right > config.LARGURA_TELA or
+        rect.bottom > config.ALTURA_TELA
+    )

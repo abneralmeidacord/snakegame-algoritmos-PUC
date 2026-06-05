@@ -106,6 +106,10 @@ def executar_jogo():
             fruit["rect"].x = x
             fruit["rect"].y = y
 
+        # Verificação de colisão da cobre com as bordas 
+        if function.verificar_colisao_borda(pygame.cobra["rect"]):
+            rodando = False
+
 
         # Verificação de colisão com o Inimigo
         if verificar_colisao(jogador["rect"], inimigo["rect"]):
