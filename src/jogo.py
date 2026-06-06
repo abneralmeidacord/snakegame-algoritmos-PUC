@@ -56,8 +56,8 @@ def executar_jogo():
         (40, 200),  
     ]
 
-    direcao = (TAMANHO_PIXEL, 0)
-    proxima_direcao = direcao
+    direçao = (TAMANHO_PIXEL, 0)
+    proxima_direçao = direçao
 
     tempo_ultimo_movimento = pygame.time.get_ticks()
     
@@ -90,36 +90,37 @@ def executar_jogo():
             if evento.type == pygame.QUIT:
                 rodando = False
 
-        teclas = pygame.key.get_pressed()
-
-        # Movimentação alterando direto os eixos X e Y do retângulo do cobrinha
-        for evento in pygame.event.get():
-            if evento.type == pygame.QUIT:
-                rodando = False
-
             if evento.type == pygame.KEYDOWN:
-                if evento.key == pygame.K_LEFT and direcao != (TAMANHO_PIXEL, 0):
-                    proxima_direcao = (-TAMANHO_PIXEL, 0)
-                elif evento.key == pygame.K_RIGHT and direcao != (-TAMANHO_PIXEL, 0):
-                    proxima_direcao = (TAMANHO_PIXEL, 0)
-                elif evento.key == pygame.K_UP and direcao != (0, TAMHO_PIXEL):
-                    proxima_direcao = (0, -TAMANHO_PIXEL)
-                elif evento.key == pygame.K_DOWN and direcao != (0, -TAMANHO_PIXEL):
-                    proxima_direcao = (0, TAMANHO_PIXEL)
+                if evento.key == pygame.K_LEFT and direçao != (TAMANHO_PIXEL, 0):
+                    proxima_direçao = (-TAMANHO_PIXEL, 0)
 
+                elif evento.key == pygame.K_RIGHT and direçao != (-TAMANHO_PIXEL, 0):
+                    proxima_direçao = (TAMANHO_PIXEL, 0)
+
+                elif evento.key == pygame.K_UP and direçao != (0, TAMANHO_PIXEL):
+                    proxima_direçao = (0, -TAMANHO_PIXEL)
+
+                elif evento.key == pygame.K_DOWN and direçao != (0, -TAMANHO_PIXEL):
+                    proxima_direçao = (0, TAMANHO_PIXEL)
+            
         agora = pygame.time.get_ticks()
         
         if agora - tempo_ultimo_movimento >= intervalo_movimento:
             tempo_ultimo_movimento = agora
-            direcao = proxima_direcao
-            cobra = movimento_cobrinha(cobra, direcao)
+            direçao = proxima_direçao
+            cobrinha = movimento_cobrinha(cobrinha, direçao)
 
-        # Limitando o cobrinha dentro das bordas da tela usando as propriedades do Rect
-        cobrinha["rect"].x = limitar_valor(cobrinha["rect"].x, 0, LARGURA_TELA - cobrinha["rect"].width)
-        cobrinha["rect"].y = limitar_valor(cobrinha["rect"].y, 0, ALTURA_TELA - cobrinha["rect"].height)
+        cabeca_x, cabeca_y = cobrinha[0]
+
+        rect_cabeca = pygame.Rect(
+            cabeca_x,
+            cabeca_y,
+            TAMANHO_PIXEL,
+            TAMANHO_PIXEL,
+        )
 
         # Verificação de colisão com a fruta
-        if verificar_colisao(cobrinha["rect"], fruit["rect"]):
+        if verificar_colisao(rect_cabeca, fruit["rect"]):
             pontos = calcular_pontos(pontos, 10)
 
             # A função usa a largura e altura da tela para gerar as coordenadas, portanto não tem necessidade de verificar se essas posições estão dentro da área da tela. 
@@ -130,7 +131,7 @@ def executar_jogo():
 
 
         # Regras de fim de jogo e recorde
-        if cobrinha_perdeu(vidas):
+        if jogador_perdeu(vidas):
             rodando = False
 
         if pontos > recorde:
@@ -147,7 +148,7 @@ def executar_jogo():
         tela.blit(fruit["imagem"], fruit["rect"])
 
 
-        desenho_cobrinha(tela, cobrinha, dir, sprites_cobrinha, TAMANHO_PIXEL)
+        desenho_cobrinha(tela, cobrinha, direçao, sprites_cobrinha, TAMANHO_PIXEL)
         pygame.display.flip()
 
     pygame.quit()

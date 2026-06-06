@@ -19,11 +19,11 @@ def sprite_cobrinha(size):
     pygame.draw.circle(corpo, verde_claro, (size // 2, size // 2), size // 5)
     
     rabo = pygame.Surface((size, size), pygame.SRCALPHA)
-    rabo.draw.polygon( rabo, verde_escuro, [(4,8), (size - 14, size // 2), (4, size - 8)])
+    pygame.draw.polygon( rabo, verde_escuro, [(4,8), (size - 14, size // 2), (4, size - 8)])
     pygame.draw.circle(rabo, amarelo, (size - 10, size // 2), 7)
     pygame.draw.circle(rabo, amarelo, (size - 4, size // 2), 5)
 
-    return {"cabeca": cabeça, "corpo": corpo, "rabo": rabo}
+    return {"cabeça": cabeça, "corpo": corpo, "rabo": rabo}
 
 def girar_cobrinha(img, dir):
     dx, dy = dir
@@ -46,6 +46,7 @@ def movimento_cobrinha(cobrinha, dir):
     )
     
     cobrinha.insert(0, cabeça_nova)
+    cobrinha.pop()
     
     return cobrinha
 
@@ -59,7 +60,7 @@ def desenho_cobrinha(tela, cobrinha, dir, sprites, size):
             rabo = cobrinha[-1]
             
             dir_rabo = (rabo[0] - parte_anterior[0], rabo[1] - parte_anterior[1])
-            img = girar_cobrinha(sprites["cabeça"], dir_rabo)
+            img = girar_cobrinha(sprites["rabo"], dir_rabo)
         
         else:
             img = sprites["corpo"]
