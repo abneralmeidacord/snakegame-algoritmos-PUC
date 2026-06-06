@@ -24,6 +24,7 @@ from src.funcoes import (
     verificar_colisao,
     tomar_dano,
     gerar_posicao_aleatoria,
+    verificar_colisao_borda,
 )
 from src.sprites import pegar_sprite
 from src.dados import (
@@ -144,8 +145,8 @@ def executar_jogo():
             fruit["rect"].y = y
 
         # Verificação de colisão da cobre com as bordas 
-        # if function.verificar_colisao_borda(pygame.cobra["rect"]):
-        #     rodando = False
+        if function.verificar_colisao_borda(pygame.cobra["rect"]):
+            rodando = False
 
 
         # Regras de fim de jogo e recorde
