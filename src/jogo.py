@@ -108,7 +108,21 @@ def executar_jogo():
         if agora - tempo_ultimo_movimento >= intervalo_movimento:
             tempo_ultimo_movimento = agora
             direçao = proxima_direçao
-            cobrinha = movimento_cobrinha(cobrinha, direçao)
+
+            # verificação se colidiu com a fruta 
+            proxima_posi_cabeça = (cobrinha[0][0] + direçao[0],cobrinha[0][1]+direçao[1])
+            rect_prox_cabeça = pygame.Rect(
+                proxima_posi_cabeça[0],
+                proxima_posi_cabeça[1],
+                TAMANHO_PIXEL,
+                TAMANHO_PIXEL,
+            ) 
+            if verificar_colisao(rect_prox_cabeça,fruit["rect"]):
+                crescer = True
+            else:
+                crescer = False
+
+            cobrinha = movimento_cobrinha(cobrinha, direçao,crescer)
 
         cabeca_x, cabeca_y = cobrinha[0]
 
@@ -130,8 +144,8 @@ def executar_jogo():
             fruit["rect"].y = y
 
         # Verificação de colisão da cobre com as bordas 
-        if function.verificar_colisao_borda(pygame.cobra["rect"]):
-            rodando = False
+        # if function.verificar_colisao_borda(pygame.cobra["rect"]):
+        #     rodando = False
 
 
         # Regras de fim de jogo e recorde

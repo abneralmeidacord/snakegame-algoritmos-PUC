@@ -1,5 +1,5 @@
 import random
-import config
+from src import config
 
 def calcular_pontos(pontos_atual, pontos_ganhos):
     """Soma os pontos ganhos à pontuação atual."""
