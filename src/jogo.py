@@ -11,6 +11,12 @@ from src.config import (
     CAMINHO_SPRITES,
 )
 
+from src.cobrinha import (
+    sprite_cobrinha,
+    movimento_cobrinha,
+    desenho_cobrinha,
+)
+
 from src.funcoes import (
     calcular_pontos,
     jogador_perdeu,
@@ -37,39 +43,43 @@ def executar_jogo():
     relogio = pygame.time.Clock()
     rodando = True
 
-    # 1. Carregando as imagens recortadas do Spritesheet
+    # 1. Carregando as imagens recortadas do Spritesheet e a cobrinha criada, com o pygame.draw
+    
+    # Cobrinha
+    sprites_cobrinha = sprite_cobrinha(TAMANHO_PIXEL)
 
+    cobrinha = [
+        (200, 200),
+        (160, 200),
+        (120, 200),
+        (80, 200),
+        (40, 200),  
+    ]
 
-    # Jogador: usando tamanho 110x110 para capturar o quadrado perfeitamente
-    player_image = pegar_sprite(CAMINHO_SPRITES, x=110, y=120, width=190, height=190, scale=0.5)
+    direçao = (TAMANHO_PIXEL, 0)
+    proxima_direçao = direçao
 
+    tempo_ultimo_movimento = pygame.time.get_ticks()
+    
+    intervalo_movimento = 130
+    
     # Fruta
     fruit_image = pegar_sprite(CAMINHO_SPRITES, x=500, y=830, width=TAMANHO_PIXEL, height=TAMANHO_PIXEL, scale=0.5)
 
-    # Morcego: usando tamanho 180x120 por causa das asas abertas
-    bat_image    = pegar_sprite(CAMINHO_SPRITES, x=905, y=1060, width=200, height=130, scale=0.5)
     
     # 2. Criando a estrutura de Sprites usando Dicionários
-    jogador = {
-        "imagem": player_image,
-        "rect": player_image.get_rect(topleft=(100, 100))
-    }
 
     #Tirei a inicialização com posição fixa -> Antes: primeira fruta iniciava em uma posição fixa / Agora: Começa em uma posição aleatória
+    
     #Também podemos tirar para deixar uma cor única (sem imagem/sprite)
     fruit = {
         "imagem": fruit_image, 
         "rect": fruit_image.get_rect(topleft=gerar_posicao_aleatoria(LARGURA_TELA, ALTURA_TELA, TAMANHO_PIXEL, TAMANHO_PIXEL)) 
     }
-    
-    inimigo = {
-        "imagem": bat_image,
-        "rect": bat_image.get_rect(topleft=(200, 500))
-    }
 
     velocidade = 5
     pontos = 0
-    vidas = 3
+    vidas = 1
     recorde = carregar_recorde(CAMINHO_RECORDE)
 
     # Loop principal: processa entrada, atualiza estado e renderiza a cena.
@@ -80,24 +90,37 @@ def executar_jogo():
             if evento.type == pygame.QUIT:
                 rodando = False
 
-        teclas = pygame.key.get_pressed()
+            if evento.type == pygame.KEYDOWN:
+                if evento.key == pygame.K_LEFT and direçao != (TAMANHO_PIXEL, 0):
+                    proxima_direçao = (-TAMANHO_PIXEL, 0)
 
-        # Movimentação alterando direto os eixos X e Y do retângulo do jogador
-        if teclas[pygame.K_LEFT]:
-            jogador["rect"].x -= velocidade
-        if teclas[pygame.K_RIGHT]:
-            jogador["rect"].x += velocidade
-        if teclas[pygame.K_UP]:
-            jogador["rect"].y -= velocidade
-        if teclas[pygame.K_DOWN]:
-            jogador["rect"].y += velocidade
+                elif evento.key == pygame.K_RIGHT and direçao != (-TAMANHO_PIXEL, 0):
+                    proxima_direçao = (TAMANHO_PIXEL, 0)
 
-        # Limitando o jogador dentro das bordas da tela usando as propriedades do Rect
-        jogador["rect"].x = limitar_valor(jogador["rect"].x, 0, LARGURA_TELA - jogador["rect"].width)
-        jogador["rect"].y = limitar_valor(jogador["rect"].y, 0, ALTURA_TELA - jogador["rect"].height)
+                elif evento.key == pygame.K_UP and direçao != (0, TAMANHO_PIXEL):
+                    proxima_direçao = (0, -TAMANHO_PIXEL)
+
+                elif evento.key == pygame.K_DOWN and direçao != (0, -TAMANHO_PIXEL):
+                    proxima_direçao = (0, TAMANHO_PIXEL)
+            
+        agora = pygame.time.get_ticks()
+        
+        if agora - tempo_ultimo_movimento >= intervalo_movimento:
+            tempo_ultimo_movimento = agora
+            direçao = proxima_direçao
+            cobrinha = movimento_cobrinha(cobrinha, direçao)
+
+        cabeca_x, cabeca_y = cobrinha[0]
+
+        rect_cabeca = pygame.Rect(
+            cabeca_x,
+            cabeca_y,
+            TAMANHO_PIXEL,
+            TAMANHO_PIXEL,
+        )
 
         # Verificação de colisão com a fruta
-        if verificar_colisao(jogador["rect"], fruit["rect"]):
+        if verificar_colisao(rect_cabeca, fruit["rect"]):
             pontos = calcular_pontos(pontos, 10)
 
             # A função usa a largura e altura da tela para gerar as coordenadas, portanto não tem necessidade de verificar se essas posições estão dentro da área da tela. 
@@ -110,19 +133,6 @@ def executar_jogo():
         if function.verificar_colisao_borda(pygame.cobra["rect"]):
             rodando = False
 
-
-        # Verificação de colisão com o Inimigo
-        if verificar_colisao(jogador["rect"], inimigo["rect"]):
-            vidas = tomar_dano(vidas, 1)
-
-            # Afasta o inimigo ao colidir
-            inimigo["rect"].x += 80
-            inimigo["rect"].y += 50
-
-            if inimigo["rect"].x > LARGURA_TELA - inimigo["rect"].width:
-                inimigo["rect"].x = 50
-            if inimigo["rect"].y > ALTURA_TELA - inimigo["rect"].height:
-                inimigo["rect"].y = 50
 
         # Regras de fim de jogo e recorde
         if jogador_perdeu(vidas):
@@ -140,9 +150,9 @@ def executar_jogo():
 
         # Desenhando os elementos na tela passando a imagem e o rect de cada dicionário
         tela.blit(fruit["imagem"], fruit["rect"])
-        tela.blit(inimigo["imagem"], inimigo["rect"])
-        tela.blit(jogador["imagem"], jogador["rect"])
 
+
+        desenho_cobrinha(tela, cobrinha, direçao, sprites_cobrinha, TAMANHO_PIXEL)
         pygame.display.flip()
 
     pygame.quit()
