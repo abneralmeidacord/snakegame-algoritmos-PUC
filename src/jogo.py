@@ -145,8 +145,8 @@ def executar_jogo():
             fruit["rect"].y = y
 
         # Verificação de colisão da cobre com as bordas 
-        if function.verificar_colisao_borda(pygame.cobra["rect"]):
-            rodando = False
+        if verificar_colisao_borda(rect_cabeca):
+             rodando = False
 
 
         # Regras de fim de jogo e recorde
