@@ -8,6 +8,7 @@ from src.config import (
     TAMANHO_PIXEL,
     CINZA,
     CAMINHO_RECORDE,
+    CAMINHO_RANKING,
     CAMINHO_SPRITES,
 )
 
@@ -30,8 +31,13 @@ from src.sprites import pegar_sprite
 from src.dados import (
     salvar_recorde,
     carregar_recorde,
+    salvar_ranking,
+    carregar_ranking
 )
 
+# TO DO: Criar tel para colocar o nome
+
+NOME = "Nome Temporário 30"
 
 def executar_jogo():
     """Executa o loop principal do jogo e controla estado, colisões e pontuação."""
@@ -82,9 +88,11 @@ def executar_jogo():
     pontos = 0
     vidas = 1
     recorde = carregar_recorde(CAMINHO_RECORDE)
+    ranking = carregar_ranking(CAMINHO_RANKING)
 
     # Loop principal: processa entrada, atualiza estado e renderiza a cena.
     while rodando:
+
         relogio.tick(FPS)
 
         for evento in pygame.event.get():
@@ -146,16 +154,17 @@ def executar_jogo():
 
         # Verificação de colisão da cobre com as bordas 
         if verificar_colisao_borda(rect_cabeca):
-             rodando = False
+            rodando = False
 
 
-        # Regras de fim de jogo e recorde
+        # Regras de fim de jogo, recorde e atualiza ranking
         if jogador_perdeu(vidas):
             rodando = False
 
-        if pontos > recorde:
-            recorde = pontos
-            salvar_recorde(CAMINHO_RECORDE, recorde)
+        if NOME not in recorde.keys() or pontos > recorde[NOME]:
+            recorde[NOME] = pontos
+            salvar_recorde(CAMINHO_RECORDE, recorde, NOME, pontos)
+            salvar_ranking(CAMINHO_RANKING, ranking, NOME, pontos)
 
         pygame.display.set_caption(
             f"{TITULO_JOGO} | Pontos: {pontos} | Recorde: {recorde} | Vidas: {vidas}"
