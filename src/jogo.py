@@ -90,10 +90,16 @@ def executar_jogo():
     recorde = carregar_recorde(CAMINHO_RECORDE)
     ranking = carregar_ranking(CAMINHO_RANKING)
 
+    # Fonte para o desenho da pontuação
+    fonte = pygame.font.Font(None,40)
+   
+
     # Loop principal: processa entrada, atualiza estado e renderiza a cena.
     while rodando:
 
         relogio.tick(FPS)
+
+       
 
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
@@ -175,6 +181,12 @@ def executar_jogo():
         # Desenhando os elementos na tela passando a imagem e o rect de cada dicionário
         tela.blit(fruit["imagem"], fruit["rect"])
 
+        # Desenha a pontuação na tela
+        texto = fonte.render(f"Pontuação: {pontos}",True,(139,0,0))
+        retangulo_texto = texto.get_rect()
+        retangulo_texto.centerx = LARGURA_TELA//2
+        retangulo_texto.y = 20
+        tela.blit(texto,retangulo_texto)
 
         desenho_cobrinha(tela, cobrinha, direçao, sprites_cobrinha, TAMANHO_PIXEL)
         pygame.display.flip()
