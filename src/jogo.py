@@ -138,6 +138,13 @@ def executar_jogo():
                 crescer = False
 
             cobrinha = movimento_cobrinha(cobrinha, direçao,crescer)
+            
+            # verificação se colidiu com o próprio 
+            cabeca = cobrinha[0]
+            corpo = cobrinha[1:]
+
+            if cabeca in corpo:
+                rodando = False
 
         cabeca_x, cabeca_y = cobrinha[0]
 
