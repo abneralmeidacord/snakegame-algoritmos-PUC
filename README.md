@@ -36,6 +36,37 @@ Explique o que o jogador precisa fazer para vencer ou avançar no jogo.
 - Regra 4: Cada frutinha vale 10 ponto e adiciona 1 bloco de corpo
 - Regra 5: As frutas especiais valem 50 pontos e retira 1 bloco ao corpo (aparecem somente 5 segundos)
 
+## Funcionalidades implementadas
+
+- Movimentação da cobrinha
+- Crescimento da cobrinha ao coletar frutas
+- Sistema de pontuação funcionando e sendo exibido na tela do jogo
+- Geração aleatória das frutas
+- Game over na colisão com as bordas da tela
+- Game over na colisão da cobrinha com o próprio corpo
+- Sistema de recorde
+- Sistema de ranking
+- Tela de game over com reinicio e sair
+
+## Próximas funcionalidades
+- escolha da cor da cobrinha
+- Tela inicial com cadastro do user e personalozação da cobrinha
+- Sistema de pausa durante a partida
+- Frutas especiais com efeitos diferentes
+- Melhoria visual na interface do jogo
+- Exibição do ranking na tela do jogo
+
+## Testes realizados
+
+- Cálculo de pontuação
+- Limitação de valores
+- Crescimento e movimentação da cobrinha
+- verificação de colisão da cobrinha com o próprio corpo
+- Controle de derrota do jogador
+- Salvamento e carregamento dos recordes
+- salvamento e carregamento do ranking
+- Ordenação e atualização do ranking
+
 ## Controles
 
 Informe as teclas ou comandos utilizados no jogo.
@@ -44,7 +75,8 @@ Informe as teclas ou comandos utilizados no jogo.
 - Seta para baixo: mover para baixo
 - Seta para esquerda: mover para esquerda
 - Seta para direita: mover para direita
-- ESC: Pausar o jogo
+- ESC: Sai do jogo
+- R: reinicia o jogo
 
 ## Como executar o projeto
 

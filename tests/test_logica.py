@@ -7,6 +7,10 @@ def test_calcular_pontos():
     """Deve somar corretamente os pontos atuais com os pontos ganhos."""
     assert calcular_pontos(10, 5) == 15
 
+def test_calcular_pontos_com_zero():
+    """Deve calcular corretamente a primera pontuação da partida."""
+    assert calcular_pontos(0,10) == 10
+
 
 def test_jogador_perdeu_com_zero_vidas():
     """Deve indicar derrota quando o total de vidas chega a zero."""
