@@ -1,4 +1,5 @@
 from src.funcoes import calcular_pontos, jogador_perdeu, limitar_valor
+from src.dados import carregar_ranking, salvar_ranking, carregar_recorde, salvar_recorde
 
 
 def test_calcular_pontos():
@@ -29,3 +30,65 @@ def test_limitar_valor_acima_do_maximo():
 def test_limitar_valor_dentro_do_intervalo():
     """Deve manter o valor original quando ele ja estiver no intervalo."""
     assert limitar_valor(50, 0, 100) == 50
+
+def test_salvar_e_carregar_recorde(tmp_path):
+    """Deve persistir e recuperar corretamente o recorde de um jogador."""
+    # o tmp_path é pq é necessário um arquivo para executar as funções. Para quando rodar o teste não ficar criando usuários imaginários para testar as 
+    # funções, o pytest tem esse recurso que cria uma pasta temporária exclusiva para cada teste. Assim os arquivos ficam isolados e são limpos automaticamente pelo pytest 
+    # quando rodar os testes novamente
+
+
+    caminho = tmp_path / "recorde.txt"
+    salvar_recorde(str(caminho), {}, "joao", 100)
+    recorde = carregar_recorde(str(caminho))
+    assert recorde["joao"] == 100
+
+
+def test_carregar_recorde_arquivo_inexistente(tmp_path):
+    """Deve retornar dicionario vazio quando o arquivo de recorde nao existe."""
+    caminho = tmp_path / "inexistente.txt"
+    assert carregar_recorde(str(caminho)) == {}
+
+
+def test_salvar_ranking_mantem_apenas_top_3(tmp_path):
+    """Deve manter somente os 3 melhores jogadores no ranking apos salvar."""
+    caminho = tmp_path / "ranking.txt"
+    ranking_inicial = {"ana": 300, "bob": 200, "carol": 150, "davi": 50}
+    salvar_ranking(str(caminho), ranking_inicial, "novo", 10)
+    ranking = carregar_ranking(str(caminho))
+    assert len(ranking) == 3
+    assert ranking == {"ana": 300, "bob": 200, "carol": 150}
+
+
+def test_salvar_ranking_atualiza_pontuacao_existente(tmp_path):
+    """Deve sobrescrever a pontuacao quando o jogador ja existe no ranking."""
+    caminho = tmp_path / "ranking.txt"
+    salvar_ranking(str(caminho), {"alice": 50}, "alice", 999)
+    ranking = carregar_ranking(str(caminho))
+    assert ranking["alice"] == 999
+
+
+def test_carregar_ranking_arquivo_inexistente(tmp_path):
+    """Deve retornar dicionario vazio quando o arquivo de ranking nao existe."""
+    caminho = tmp_path / "inexistente.txt"
+    assert carregar_ranking(str(caminho)) == {}
+
+
+def test_ranking_ordenado_por_pontuacao(tmp_path):
+    """Deve retornar os jogadores em ordem decrescente de pontuacao."""
+    caminho = tmp_path / "ranking.txt"
+    ranking_inicial = {"carlos": 80, "beatriz": 500, "antonio": 200}
+    salvar_ranking(str(caminho), ranking_inicial, "beatriz", 500)
+    ranking = carregar_ranking(str(caminho))
+    pontuacoes = list(ranking.values())
+    assert pontuacoes == sorted(pontuacoes, reverse=True)
+
+
+def test_ranking_cheio_substitui_mais_fraco_por_pontuacao_maior(tmp_path):
+    """Deve substituir o mais fraco quando um novo jogador entra com pontuacao maior."""
+    caminho = tmp_path / "ranking.txt"
+    ranking_inicial = {"ana": 300, "bob": 200, "carol": 100}
+    salvar_ranking(str(caminho), ranking_inicial, "davi", 150)
+    ranking = carregar_ranking(str(caminho))
+    assert len(ranking) == 3
+    assert ranking == {"ana": 300, "bob": 200, "davi": 150}
