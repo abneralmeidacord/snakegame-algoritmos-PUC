@@ -1,4 +1,4 @@
 nome,pontucao
-Nome Temporário 30,70
+Nome Temporário 30,160
 Nome Temporário 11,40
 Nome Temporário 9,30

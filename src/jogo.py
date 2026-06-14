@@ -26,6 +26,7 @@ from src.funcoes import (
     tomar_dano,
     gerar_posicao_aleatoria,
     verificar_colisao_borda,
+    tela_game_over,
 )
 from src.sprites import pegar_sprite
 from src.dados import (
@@ -49,6 +50,7 @@ def executar_jogo():
 
     relogio = pygame.time.Clock()
     rodando = True
+    estado = "jogando"
 
     # 1. Carregando as imagens recortadas do Spritesheet e a cobrinha criada, com o pygame.draw
     
@@ -99,7 +101,22 @@ def executar_jogo():
 
         relogio.tick(FPS)
 
-       
+        if estado == "game_over":
+            tela_game_over(tela, pontos)
+
+            for evento in pygame.event.get():
+                if evento.type == pygame.QUIT:
+                    rodando = False
+
+                elif evento.type == pygame.KEYDOWN:
+                    if evento.key == pygame.K_r:
+                        executar_jogo()
+                        return
+
+                    elif evento.key == pygame.K_ESCAPE:
+                        rodando = False
+
+            continue
 
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
@@ -144,7 +161,7 @@ def executar_jogo():
             corpo = cobrinha[1:]
 
             if cabeca in corpo:
-                rodando = False
+                estado = "game_over"
 
         cabeca_x, cabeca_y = cobrinha[0]
 
@@ -165,14 +182,14 @@ def executar_jogo():
             fruit["rect"].x = x
             fruit["rect"].y = y
 
-        # Verificação de colisão da cobre com as bordas 
+        # Verificação de colisão da cobra com as bordas 
         if verificar_colisao_borda(rect_cabeca):
-            rodando = False
+            estado = "game_over"
 
 
         # Regras de fim de jogo, recorde e atualiza ranking
         if jogador_perdeu(vidas):
-            rodando = False
+            estado = "game_over"
 
         if NOME not in recorde.keys() or pontos > recorde[NOME]:
             recorde[NOME] = pontos
