@@ -44,3 +44,11 @@ def verificar_colisao_borda(rect):
         rect.right > config.LARGURA_TELA or
         rect.bottom > config.ALTURA_TELA
     )
+
+def verificar_colisao_proprio_corpo(cobrinha):
+    """Verifica se a cabeça da cobra encostou em alguma parte do corpo."""
+    cabeca = cobrinha[0]
+    corpo = cobrinha[1:]
+
+    return cabeca in corpo
+
