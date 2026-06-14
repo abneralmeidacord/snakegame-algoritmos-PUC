@@ -1,4 +1,5 @@
-from src.funcoes import calcular_pontos, jogador_perdeu, limitar_valor
+from src.funcoes import calcular_pontos, jogador_perdeu, limitar_valor, verificar_colisao_proprio_corpo
+from src.cobrinha import movimento_cobrinha
 from src.dados import carregar_ranking, salvar_ranking, carregar_recorde, salvar_recorde
 
 
@@ -30,6 +31,87 @@ def test_limitar_valor_acima_do_maximo():
 def test_limitar_valor_dentro_do_intervalo():
     """Deve manter o valor original quando ele ja estiver no intervalo."""
     assert limitar_valor(50, 0, 100) == 50
+
+def test_movimento_cobrinha_para_direita_sem_crescer():
+    """Deve mover a cobrinha para a direita e manter o mesmo tamanho."""
+    cobrinha = [
+        (200, 200),
+        (160, 200),
+        (120, 200),
+    ]
+
+    direcao = (40, 0)
+
+    resultado = movimento_cobrinha(cobrinha.copy(), direcao, False)
+
+    assert resultado == [
+        (240, 200),
+        (200, 200),
+        (160, 200),
+    ]
+
+
+def test_movimento_cobrinha_para_baixo_sem_crescer():
+    """Deve mover a cobrinha para baixo e manter o mesmo tamanho."""
+    cobrinha = [
+        (200, 200),
+        (200, 160),
+        (200, 120),
+    ]
+
+    direcao = (0, 40)
+
+    resultado = movimento_cobrinha(cobrinha.copy(), direcao, False)
+
+    assert resultado == [
+        (200, 240),
+        (200, 200),
+        (200, 160),
+    ]
+
+
+def test_movimento_cobrinha_crescendo():
+    """Deve mover a cobrinha e aumentar o tamanho quando crescer for True."""
+    cobrinha = [
+        (200, 200),
+        (160, 200),
+        (120, 200),
+    ]
+
+    direcao = (40, 0)
+
+    resultado = movimento_cobrinha(cobrinha.copy(), direcao, True)
+
+    assert resultado == [
+        (240, 200),
+        (200, 200),
+        (160, 200),
+        (120, 200),
+    ]
+
+
+def test_colisao_com_proprio_corpo():
+    """Deve retornar True quando a cabeça estiver na mesma posição do corpo."""
+    cobrinha = [
+        (200, 200),
+        (160, 200),
+        (200, 200),
+        (120, 200),
+    ]
+
+    assert verificar_colisao_proprio_corpo(cobrinha) is True
+
+
+def test_sem_colisao_com_proprio_corpo():
+    """Deve retornar False quando a cabeça não estiver no corpo."""
+    cobrinha = [
+        (200, 200),
+        (160, 200),
+        (120, 200),
+        (80, 200),
+    ]
+
+    assert verificar_colisao_proprio_corpo(cobrinha) is False
 
 def test_salvar_e_carregar_recorde(tmp_path):
     """Deve persistir e recuperar corretamente o recorde de um jogador."""
