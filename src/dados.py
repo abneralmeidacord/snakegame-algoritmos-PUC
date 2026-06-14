@@ -22,7 +22,8 @@ def carregar_recorde(caminho_arquivo):
 
                 lista_formatada = conteudo[i].strip("\n").split(",")
                 
-                recordes[lista_formatada[0]] = int(lista_formatada[1]) 
+                if len(lista_formatada) >= 2 and lista_formatada[1].isdigit():
+                    recordes[lista_formatada[0]] = int(lista_formatada[1]) 
                 
             return recordes
 
@@ -74,7 +75,8 @@ def carregar_ranking(caminho_arquivo):
                 
                 lista_formatada = conteudo[i].strip("\n").split(",")
 
-                ranking[lista_formatada[0]] = int(lista_formatada[1]) 
+                if len(lista_formatada) >= 2:
+                    ranking[lista_formatada[0]] = int(lista_formatada[1])
                 
             return ranking
 
