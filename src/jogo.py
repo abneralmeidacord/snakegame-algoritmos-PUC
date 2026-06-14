@@ -180,7 +180,7 @@ def executar_jogo():
             salvar_ranking(CAMINHO_RANKING, ranking, NOME, pontos)
 
         pygame.display.set_caption(
-            f"{TITULO_JOGO} | Pontos: {pontos} | Recorde: {recorde} | Vidas: {vidas}"
+            f"{TITULO_JOGO} | Pontos: {pontos} | Recorde: {recorde[NOME]} | Vidas: {vidas}"
         )
 
         tela.fill(CINZA)
