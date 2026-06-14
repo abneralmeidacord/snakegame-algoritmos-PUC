@@ -127,3 +127,12 @@ def tela_game_over(tela, pontos):
     tela.blit(sair, rect_sair)
 
     pygame.display.flip()
+
+def verificar_colisao_proprio_corpo(cobrinha):
+    """Verifica se a cabeça da cobra encostou em alguma parte do corpo."""
+    cabeca = cobrinha[0]
+    corpo = cobrinha[1:]
+
+    return cabeca in corpo
+
+
