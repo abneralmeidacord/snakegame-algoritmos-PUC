@@ -75,8 +75,8 @@ Informe as teclas ou comandos utilizados no jogo.
 - Seta para baixo: mover para baixo
 - Seta para esquerda: mover para esquerda
 - Seta para direita: mover para direita
-- ESC: Sai do jogo
-- R: reinicia o jogo
+- ESC: encerra do jogo após o game over
+- R: reinicia o jogo após o game over
 
 ## Como executar o projeto
 
