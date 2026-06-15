@@ -83,8 +83,8 @@ Informe as teclas ou comandos utilizados no jogo.
 ### 1. Clonar o repositório
 
 ```bash
-git clone LINK_DO_REPOSITORIO
-cd NOME_DA_PASTA
+git https://github.com/abneralmeidacord/snakegame-algoritmos-PUC.git
+cd src
 pip install -r requirements.txt
 python main.py
 ```
