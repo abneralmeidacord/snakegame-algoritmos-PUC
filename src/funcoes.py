@@ -1,5 +1,18 @@
 import random
-from src import config
+import pygame
+from src.config import (
+    LARGURA_TELA,
+    ALTURA_TELA,
+    FPS,
+    TITULO_JOGO,
+    TAMANHO_PIXEL,
+    CINZA,
+    CAMINHO_RECORDE,
+    CAMINHO_RANKING,
+    CAMINHO_SPRITES,
+)
+import src.config as config
+
 
 def calcular_pontos(pontos_atual, pontos_ganhos):
     """Soma os pontos ganhos à pontuação atual."""
@@ -50,10 +63,81 @@ def verificar_colisao_borda(rect):
         rect.bottom > config.ALTURA_TELA
     )
 
+def tela_game_over(tela, pontos):
+
+    fonte_titulo = pygame.font.Font(None, 75)
+    fonte_texto = pygame.font.Font(None, 40)
+
+    # Fundo escurecido
+    overlay = pygame.Surface((LARGURA_TELA, ALTURA_TELA))
+    overlay.set_alpha(180)
+    overlay.fill((0, 0, 0))
+    tela.blit(overlay, (0, 0))
+
+    # Caixa central
+    caixa = pygame.Rect(150, 120, 500, 380)
+    caixa.center = (LARGURA_TELA // 2, ALTURA_TELA // 2)
+    pygame.draw.rect(tela, (25, 25, 25), caixa, border_radius=15)
+    pygame.draw.rect(tela, (255, 255, 255), caixa, 3, border_radius=15)
+
+    # Título
+    titulo = fonte_titulo.render(
+        "GAME OVER",
+        True,
+        (220, 20, 60)
+    )
+
+    rect_titulo = titulo.get_rect(
+        center=(LARGURA_TELA // 2, 200)
+    )
+
+    tela.blit(titulo, rect_titulo)
+
+    # Pontuação
+    texto_score = fonte_texto.render(
+        f"Pontuação: {pontos}",
+        True,
+        (255, 255, 255)
+    )
+
+    rect_score = texto_score.get_rect(
+        center=(LARGURA_TELA // 2, 280)
+    )
+
+    tela.blit(texto_score, rect_score)
+
+    # Botões
+    reiniciar = fonte_texto.render(
+        "[ R ] Reiniciar",
+        True,
+        (255, 255, 255)
+    )
+
+    rect_reiniciar = reiniciar.get_rect(
+        center=(LARGURA_TELA // 2, 370)
+    )
+
+    tela.blit(reiniciar, rect_reiniciar)
+
+    sair = fonte_texto.render(
+        "[ ESC ] Sair",
+        True,
+        (255, 255, 255)
+    )
+
+    rect_sair = sair.get_rect(
+        center=(LARGURA_TELA // 2, 430)
+    )
+
+    tela.blit(sair, rect_sair)
+
+    pygame.display.flip()
+
 def verificar_colisao_proprio_corpo(cobrinha):
     """Verifica se a cabeça da cobra encostou em alguma parte do corpo."""
     cabeca = cobrinha[0]
     corpo = cobrinha[1:]
 
     return cabeca in corpo
+
 
