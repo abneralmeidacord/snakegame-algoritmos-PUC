@@ -63,6 +63,7 @@ def executar_jogo():
         (40, 200),  
     ]
 
+
     direçao = (TAMANHO_PIXEL, 0)
     proxima_direçao = direçao
 
@@ -81,7 +82,7 @@ def executar_jogo():
     #Também podemos tirar para deixar uma cor única (sem imagem/sprite)
     fruit = {
         "imagem": fruit_image, 
-        "rect": fruit_image.get_rect(topleft=gerar_posicao_aleatoria(LARGURA_TELA, ALTURA_TELA, TAMANHO_PIXEL, TAMANHO_PIXEL)) 
+        "rect": fruit_image.get_rect(topleft=gerar_posicao_aleatoria(LARGURA_TELA, ALTURA_TELA, TAMANHO_PIXEL, TAMANHO_PIXEL, cobrinha)) 
     }
 
     velocidade = 5
@@ -124,6 +125,7 @@ def executar_jogo():
             tempo_ultimo_movimento = agora
             direçao = proxima_direçao
 
+            
             # verificação se colidiu com a fruta 
             proxima_posi_cabeça = (cobrinha[0][0] + direçao[0],cobrinha[0][1]+direçao[1])
             rect_prox_cabeça = pygame.Rect(
@@ -147,7 +149,6 @@ def executar_jogo():
                 rodando = False
 
         cabeca_x, cabeca_y = cobrinha[0]
-
         rect_cabeca = pygame.Rect(
             cabeca_x,
             cabeca_y,
@@ -161,7 +162,7 @@ def executar_jogo():
 
             # A função usa a largura e altura da tela para gerar as coordenadas, portanto não tem necessidade de verificar se essas posições estão dentro da área da tela. 
             # Além disso, a posição aleátoria não deixa óbvio onde a próxima fruta irá aparecer
-            x, y = gerar_posicao_aleatoria(LARGURA_TELA, ALTURA_TELA, TAMANHO_PIXEL, TAMANHO_PIXEL)
+            x, y = gerar_posicao_aleatoria(LARGURA_TELA, ALTURA_TELA, TAMANHO_PIXEL, TAMANHO_PIXEL, cobrinha)
             fruit["rect"].x = x
             fruit["rect"].y = y
 

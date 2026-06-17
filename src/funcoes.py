@@ -29,10 +29,15 @@ def verificar_colisao(retangulo_1, retangulo_2):
     """Verifica sobreposição entre dois retângulos do Pygame."""
     return retangulo_1.colliderect(retangulo_2)
 
-def gerar_posicao_aleatoria(largura, altura, largura_sprite, altura_sprite):
+def gerar_posicao_aleatoria(largura, altura, largura_sprite, altura_sprite, cobrinha):
     """Gera um x e y (coordenadas) aleátorias."""
     x = random.randint(0, largura-largura_sprite)
     y = random.randint(0, altura-altura_sprite)
+
+    while (x, y) in cobrinha:
+        x = random.randint(0, largura-largura_sprite)
+        y = random.randint(0, altura-altura_sprite)
+
 
     return x, y
 
