@@ -42,15 +42,25 @@ def verificar_colisao(retangulo_1, retangulo_2):
     """Verifica sobreposição entre dois retângulos do Pygame."""
     return retangulo_1.colliderect(retangulo_2)
 
-def gerar_posicao_aleatoria(largura, altura, largura_sprite, altura_sprite, cobrinha):
+def gerar_posicao_aleatoria(largura_tela, altura_tela, tamanho_pixel, cobrinha):
     """Gera um x e y (coordenadas) aleátorias."""
-    x = random.randint(0, largura-largura_sprite)
-    y = random.randint(0, altura-altura_sprite)
+    # Como a cobrinha se movimenta com base no tamanho_pixel, o grid da fruta deve ter o mesmo comportamento se o spaw dessa não 
+    # pode colidir com a cabeça ou corpo da cobra  
+
+    # quantidade de colunas no grid de movimentação 
+    coluna = random.randint(0, largura_tela // tamanho_pixel - 1) 
+    # quantidade de linhas no grid de movimentação
+    linha = random.randint(0, altura_tela // tamanho_pixel - 1) 
+    # a posição deve ser multipla de tamanho pixel (cobrinha inicia com a tupla (200, 200) para seu corpo, logo multipla de 40 que é o 
+    # tamanho_pixel)
+    x = coluna * tamanho_pixel 
+    y = linha * tamanho_pixel
 
     while (x, y) in cobrinha:
-        x = random.randint(0, largura-largura_sprite)
-        y = random.randint(0, altura-altura_sprite)
-
+        coluna = random.randint(0, largura_tela // tamanho_pixel - 1) 
+        linha = random.randint(0, altura_tela // tamanho_pixel - 1) 
+        x = coluna * tamanho_pixel 
+        y = linha * tamanho_pixel
 
     return x, y
 
