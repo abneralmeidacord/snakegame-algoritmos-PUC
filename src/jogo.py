@@ -35,7 +35,10 @@ from src.dados import (
     salvar_ranking,
     carregar_ranking
 )
-
+from src.config import(
+    CAMINHO_GAME_OVER,
+    CAMINHO_SOM_COMER
+)
 # TO DO: Criar tel para colocar o nome
 
 NOME = "Nome Temporário 30"
@@ -43,7 +46,12 @@ NOME = "Nome Temporário 30"
 def executar_jogo():
     """Executa o loop principal do jogo e controla estado, colisões e pontuação."""
     pygame.init()
-    
+    pygame.mixer.init()
+    #carrega os sons
+    som_comer = pygame.mixer.Sound(CAMINHO_SOM_COMER)
+    som_game_over = pygame.mixer.Sound(CAMINHO_GAME_OVER)
+    som_comer.set_volume(0.5)
+    som_game_over.set_volume(0.7)
 
     tela = pygame.display.set_mode((LARGURA_TELA, ALTURA_TELA))
     pygame.display.set_caption(TITULO_JOGO)
@@ -172,6 +180,8 @@ def executar_jogo():
             corpo = cobrinha[1:]
 
             if cabeca in corpo:
+                som_game_over.play()
+                pygame.mixer.music.stop()
                 estado = "game_over"
 
         cabeca_x, cabeca_y = cobrinha[0]
@@ -185,6 +195,7 @@ def executar_jogo():
         # Verificação de colisão com a fruta
         if verificar_colisao(rect_cabeca, fruit["rect"]):
             pontos = calcular_pontos(pontos, 10)
+            som_comer.play()
 
             # A função usa a largura e altura da tela para gerar as coordenadas, portanto não tem necessidade de verificar se essas posições estão dentro da área da tela. 
             # Além disso, a posição aleátoria não deixa óbvio onde a próxima fruta irá aparecer
@@ -196,10 +207,13 @@ def executar_jogo():
         # Verificação de colisão da cobra com as bordas 
         if verificar_colisao_borda(rect_cabeca):
             estado = "game_over"
-
+            som_game_over.play()
+            pygame.mixer.music.stop()
 
         # Regras de fim de jogo, recorde e atualiza ranking
         if jogador_perdeu(vidas):
+            som_game_over.play()
+            pygame.mixer.music.stop()
             estado = "game_over"
 
         if NOME not in recorde.keys() or pontos > recorde[NOME]:
