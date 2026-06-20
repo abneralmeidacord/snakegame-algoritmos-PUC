@@ -1,2 +1,2 @@
 nome,pontucao
-Nome Temporário 30,290
+Nome Temporário 30,460

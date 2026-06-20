@@ -38,13 +38,13 @@ def girar_cobrinha(img, dir):
         ang =-90
     return pygame.transform.rotate(img, ang)
 
-def movimento_cobrinha(cobrinha, dir,crescer):
+def movimento_cobrinha(cobrinha, dir, crescer):    
     cabeça_x, cabeça_y = cobrinha[0]
-    
     cabeça_nova = (
         cabeça_x + dir[0], cabeça_y + dir[1]
     )
-    if crescer == True:
+
+    if crescer:
         cobrinha.insert(0, cabeça_nova)
     else:
         cobrinha.insert(0, cabeça_nova)
@@ -68,3 +68,7 @@ def desenho_cobrinha(tela, cobrinha, dir, sprites, size):
             img = sprites["corpo"]
             
         tela.blit(img, rect)
+
+def diminuir_cobrinha(cobrinha): 
+    cobrinha.pop()
+    return cobrinha

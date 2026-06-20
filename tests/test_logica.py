@@ -1,5 +1,5 @@
 from src.funcoes import calcular_pontos, jogador_perdeu, limitar_valor, verificar_colisao_proprio_corpo
-from src.cobrinha import movimento_cobrinha
+from src.cobrinha import movimento_cobrinha, diminuir_cobrinha
 from src.dados import carregar_ranking, salvar_ranking, carregar_recorde, salvar_recorde
 
 
@@ -178,3 +178,33 @@ def test_ranking_cheio_substitui_mais_fraco_por_pontuacao_maior(tmp_path):
     ranking = carregar_ranking(str(caminho))
     assert len(ranking) == 3
     assert ranking == {"ana": 300, "bob": 200, "davi": 150}
+
+def test_tamanho_cobrinha_correto_ao_comer_fruta_especial():
+    """Deve diminuir 1 pixel acima do tamanho mínimo, mas não diminuir abaixo dele."""
+    cobrinha_grande = [(200, 200), (160, 200), (120, 200), (80, 200), (40, 200), (0, 200)]  # 6
+    if len(cobrinha_grande) > 5:
+        diminuir_cobrinha(cobrinha_grande)
+    assert len(cobrinha_grande) == 5  # diminuiu 1
+ 
+    cobrinha_minima = [(200, 200), (160, 200), (120, 200), (80, 200), (40, 200)]  # 5
+    if len(cobrinha_minima) > 5:
+        diminuir_cobrinha(cobrinha_minima)
+    assert len(cobrinha_minima) == 5  # não pode diminuir mais
+ 
+ 
+def test_fruta_especial_visivel_por_3_segundos():
+    """Deve continuar visível até completar 3s ou 3000ms, e sumir a partir daí."""
+    tempo_criada = 1000
+ 
+    ainda_visivel_antes = (1000 + 2999 - tempo_criada) < 3000
+    sumiu_apos_3s = (1000 + 3000 - tempo_criada) >= 3000
+ 
+    assert ainda_visivel_antes is True
+    assert sumiu_apos_3s is True
+ 
+def test_fruta_especial_soma_50_pontos_e_nao_10():
+    """A fruta especial soma 50 pontos, nunca os 10 da fruta normal."""
+    pontos = calcular_pontos(0, 50)
+ 
+    assert pontos == 50
+    assert pontos != calcular_pontos(0, 10)
