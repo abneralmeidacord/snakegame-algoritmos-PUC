@@ -152,6 +152,7 @@ def verificar_colisao_proprio_corpo(cobrinha):
 
 def sera_fruta_especial():
     return random.choices([True, False], weights=[10, 90], k=1)[0] # há uma chance de 1/10 ou 10% de uma fruta aparecer na tela (peso de True = 10)
+
 def tela_inicial(tela, pontos):
 
     fonte_titulo = pygame.font.Font(None, 75)
