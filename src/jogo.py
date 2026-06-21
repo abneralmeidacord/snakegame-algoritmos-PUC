@@ -45,7 +45,7 @@ from src.funcoes import tela_inicial
 
 NOME = "Nome Temporário 30"
 
-def executar_jogo():
+def executar_jogo(mostrar_menu=True):
     """Executa o loop principal do jogo e controla estado, colisões e pontuação."""
     pygame.init()
     pygame.mixer.init()
@@ -62,7 +62,9 @@ def executar_jogo():
 
     tela = pygame.display.set_mode((LARGURA_TELA, ALTURA_TELA))
     pygame.display.set_caption(TITULO_JOGO)
-    tela_inicial(tela)
+    
+    if mostrar_menu:
+        tela_inicial(tela)
 
     relogio = pygame.time.Clock()
     rodando = True
@@ -136,7 +138,7 @@ def executar_jogo():
 
                 elif evento.type == pygame.KEYDOWN:
                     if evento.key == pygame.K_r:
-                        executar_jogo()
+                        executar_jogo(False)
                         return
 
                     elif evento.key == pygame.K_ESCAPE:

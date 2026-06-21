@@ -11,7 +11,9 @@ from src.config import (
     CAMINHO_RANKING,
     CAMINHO_SPRITES,
 )
+from src.dados import carregar_ranking
 import src.config as config
+
 
 
 def calcular_pontos(pontos_atual, pontos_ganhos):
@@ -98,7 +100,7 @@ def tela_game_over(tela, pontos):
     )
 
     rect_titulo = titulo.get_rect(
-        center=(LARGURA_TELA // 2, 200)
+        center=(LARGURA_TELA // 2, 170)
     )
 
     tela.blit(titulo, rect_titulo)
@@ -111,7 +113,7 @@ def tela_game_over(tela, pontos):
     )
 
     rect_score = texto_score.get_rect(
-        center=(LARGURA_TELA // 2, 280)
+        center=(LARGURA_TELA // 2, 210)
     )
 
     tela.blit(texto_score, rect_score)
@@ -124,7 +126,7 @@ def tela_game_over(tela, pontos):
     )
 
     rect_reiniciar = reiniciar.get_rect(
-        center=(LARGURA_TELA // 2, 370)
+        center=(LARGURA_TELA // 2, 400)
     )
 
     tela.blit(reiniciar, rect_reiniciar)
@@ -136,11 +138,11 @@ def tela_game_over(tela, pontos):
     )
 
     rect_sair = sair.get_rect(
-        center=(LARGURA_TELA // 2, 430)
+        center=(LARGURA_TELA // 2,440)
     )
 
     tela.blit(sair, rect_sair)
-
+    exibir_ranking(tela, fonte_texto,250)
     pygame.display.flip()
 
 def verificar_colisao_proprio_corpo(cobrinha):
@@ -152,14 +154,16 @@ def verificar_colisao_proprio_corpo(cobrinha):
 
 def sera_fruta_especial():
     return random.choices([True, False], weights=[10, 90], k=1)[0] # há uma chance de 1/10 ou 10% de uma fruta aparecer na tela (peso de True = 10)
-def tela_inicial(tela):
 
+def tela_inicial(tela):
+    
     fonte_titulo = pygame.font.Font(None, 75)
     fonte_texto = pygame.font.Font(None, 40)
 
     rodando = True
 
     while rodando:
+       
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 return
@@ -191,7 +195,7 @@ def tela_inicial(tela):
         )
 
         rect_titulo = titulo.get_rect(
-            center=(LARGURA_TELA // 2, 200)
+            center=(LARGURA_TELA // 2, 170)
         )
 
         tela.blit(titulo, rect_titulo)
@@ -204,7 +208,7 @@ def tela_inicial(tela):
         )
 
         rect_jogar = jogar.get_rect(
-            center=(LARGURA_TELA // 2, 370)
+            center=(LARGURA_TELA // 2, 390)
         )
 
         tela.blit(jogar, rect_jogar)
@@ -220,6 +224,42 @@ def tela_inicial(tela):
         )
 
         tela.blit(sair, rect_sair)
+
+        exibir_ranking(tela, fonte_texto,230)
+
+        pygame.display.flip()
+
+        
+def exibir_ranking(tela, fonte_texto, y_inicial):
+        
+        ranking = carregar_ranking(CAMINHO_RANKING)
+        ranking_ordenado = sorted(ranking.items(), key=lambda x: x[1], reverse=True)[:5]
+    
+        titulo_ranking = fonte_texto.render("RANKING", True,(255,255,0))
+        rect_titulo_ranking = titulo_ranking.get_rect(center=(LARGURA_TELA//2,y_inicial))
+        tela.blit(titulo_ranking,rect_titulo_ranking)
+        y = y_inicial+40
+        
+        for i, (nome,pontos) in enumerate(ranking_ordenado):
+            
+            if i == 0:
+                cor = (255,215,0)
+                
+            elif i == 1:
+                cor = (192,192,192)
+            elif i == 2:
+                cor = (205,127,50)
+            else:
+                cor = (255,255,255)
+            
+            texto = fonte_texto.render(
+                    f"{i+1}°- {nome} - {pontos}",True,cor
+                )
+            rect_texto = texto.get_rect(center=(LARGURA_TELA//2,y)
+            )
+            tela.blit(texto, rect_texto)
+            y+=30
+            
 
         pygame.display.flip()
 
