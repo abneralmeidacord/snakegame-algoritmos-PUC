@@ -10,8 +10,11 @@ from src.config import (
     CAMINHO_RECORDE,
     CAMINHO_RANKING,
     CAMINHO_SPRITES,
+    CAMINHO_MUSICA_TELA_INICIAL,
+    CAMINHO_MUSICA_FUNDO
 )
 from src.dados import carregar_ranking
+
 import src.config as config
 
 
@@ -156,6 +159,7 @@ def sera_fruta_especial():
     return random.choices([True, False], weights=[10, 90], k=1)[0] # há uma chance de 1/10 ou 10% de uma fruta aparecer na tela (peso de True = 10)
 
 def tela_inicial(tela):
+    tocar_musica_tela_inicial()
     
     fonte_titulo = pygame.font.Font(None, 75)
     fonte_texto = pygame.font.Font(None, 40)
@@ -263,3 +267,12 @@ def exibir_ranking(tela, fonte_texto, y_inicial):
 
         pygame.display.flip()
 
+def tocar_musica_tela_inicial():
+    pygame.mixer.music.load(CAMINHO_MUSICA_TELA_INICIAL)
+    pygame.mixer.music.set_volume(0.2)
+    pygame.mixer.music.play(-1)
+
+def tocar_musica_jogo():
+    pygame.mixer.music.load(CAMINHO_MUSICA_FUNDO)
+    pygame.mixer.music.set_volume(0.2)
+    pygame.mixer.music.play(-1)

@@ -26,7 +26,10 @@ from src.funcoes import (
     gerar_posicao_aleatoria,
     verificar_colisao_borda,
     tela_game_over,
-    sera_fruta_especial
+    sera_fruta_especial,
+    tela_inicial,
+    tocar_musica_jogo,
+    tocar_musica_tela_inicial
 )
 from src.sprites import pegar_sprite
 from src.dados import (
@@ -38,7 +41,6 @@ from src.dados import (
 from src.config import(
     CAMINHO_SOM_GAME_OVER,
     CAMINHO_SOM_COMER,
-    CAMINHO_MUSICA_FUNDO
 )
 from src.funcoes import tela_inicial
 # TO DO: Criar tel para colocar o nome
@@ -47,6 +49,7 @@ NOME = "Nome Temporário 30"
 
 def executar_jogo(mostrar_menu=True):
     """Executa o loop principal do jogo e controla estado, colisões e pontuação."""
+    
     pygame.init()
     pygame.mixer.init()
     #carrega os efeitos sonoros
@@ -55,16 +58,13 @@ def executar_jogo(mostrar_menu=True):
     som_comer.set_volume(0.5)
     som_game_over.set_volume(0.7)
 
-    #carrega a musica de fundo
-    pygame.mixer.music.load(CAMINHO_MUSICA_FUNDO)
-    pygame.mixer.music.set_volume(0.2)
-    pygame.mixer.music.play(-1)
-
     tela = pygame.display.set_mode((LARGURA_TELA, ALTURA_TELA))
     pygame.display.set_caption(TITULO_JOGO)
     
     if mostrar_menu:
         tela_inicial(tela)
+        pygame.mixer.music.stop()
+        tocar_musica_jogo()
 
     relogio = pygame.time.Clock()
     rodando = True
