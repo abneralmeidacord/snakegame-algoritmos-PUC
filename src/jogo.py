@@ -16,17 +16,17 @@ from src.cobrinha import (
     sprite_cobrinha,
     movimento_cobrinha,
     desenho_cobrinha,
+    diminuir_cobrinha
 )
 
 from src.funcoes import (
     calcular_pontos,
     jogador_perdeu,
-    limitar_valor,
     verificar_colisao,
-    tomar_dano,
     gerar_posicao_aleatoria,
     verificar_colisao_borda,
     tela_game_over,
+    sera_fruta_especial
 )
 from src.sprites import pegar_sprite
 from src.dados import (
@@ -36,8 +36,9 @@ from src.dados import (
     carregar_ranking
 )
 from src.config import(
-    CAMINHO_GAME_OVER,
-    CAMINHO_SOM_COMER
+    CAMINHO_SOM_GAME_OVER,
+    CAMINHO_SOM_COMER,
+    CAMINHO_MUSICA_FUNDO
 )
 # TO DO: Criar tel para colocar o nome
 
@@ -47,11 +48,16 @@ def executar_jogo():
     """Executa o loop principal do jogo e controla estado, colisões e pontuação."""
     pygame.init()
     pygame.mixer.init()
-    #carrega os sons
+    #carrega os efeitos sonoros
     som_comer = pygame.mixer.Sound(CAMINHO_SOM_COMER)
-    som_game_over = pygame.mixer.Sound(CAMINHO_GAME_OVER)
+    som_game_over = pygame.mixer.Sound(CAMINHO_SOM_GAME_OVER)
     som_comer.set_volume(0.5)
     som_game_over.set_volume(0.7)
+
+    #carrega a musica de fundo
+    pygame.mixer.music.load(CAMINHO_MUSICA_FUNDO)
+    pygame.mixer.music.set_volume(0.3)
+    pygame.mixer.music.play(-1)
 
     tela = pygame.display.set_mode((LARGURA_TELA, ALTURA_TELA))
     pygame.display.set_caption(TITULO_JOGO)
@@ -81,26 +87,25 @@ def executar_jogo():
     
     intervalo_movimento = 130
     
-    # Fruta
-    fruit_image = pegar_sprite(CAMINHO_SPRITES, x=250, y=800, width=TAMANHO_PIXEL, height=TAMANHO_PIXEL)
+    # Frutas
+    fruit_image = pegar_sprite(CAMINHO_SPRITES, x=250, y=800, width=TAMANHO_PIXEL, height=TAMANHO_PIXEL, scale=0.6) # 24px se TAMANHO_PIXEL=40
+    # deixa visualmente mais bonito e ainda segue o grid da cobrinha
+    especial_fruit_image = pegar_sprite(CAMINHO_SPRITES, x=150, y=800, width=TAMANHO_PIXEL, height=TAMANHO_PIXEL, scale=0.6)
 
-    tamanho_visual = int(TAMANHO_PIXEL * 0.6)  # 28px se TAMANHO_PIXEL=40 => substitui o scale=0.5 para alinhar com o grid da cobra e 
-    # deixa visualmente bonito
+    # serve para marcar os 3 segundos que a fruta terá na tela. Está como 0 pois dependerá de quando a priemira colisão ocorrer
+    tempo_fruta_especial_criada = 0 
 
-    fruit_image = pygame.transform.smoothscale(
-        fruit_image,
-        (tamanho_visual, tamanho_visual)
-    )
-
-    
     # 2. Criando a estrutura de Sprites usando Dicionários
-
     #Tirei a inicialização com posição fixa -> Antes: primeira fruta iniciava em uma posição fixa / Agora: Começa em uma posição aleatória
-    
     #Também podemos tirar para deixar uma cor única (sem imagem/sprite)
     fruit = {
         "imagem": fruit_image, 
         "rect": fruit_image.get_rect(topleft=gerar_posicao_aleatoria(LARGURA_TELA, ALTURA_TELA, TAMANHO_PIXEL, cobrinha))  
+    }
+
+    especial_fruit = {
+        "imagem": especial_fruit_image, 
+        "rect": especial_fruit_image.get_rect(topleft=gerar_posicao_aleatoria(LARGURA_TELA, ALTURA_TELA, TAMANHO_PIXEL, cobrinha))  
     }
 
     velocidade = 5
@@ -111,8 +116,9 @@ def executar_jogo():
 
     # Fonte para o desenho da pontuação
     fonte = pygame.font.Font(None,40)
-   
 
+    # Variável que irá armazenar um valor booleano que armazena o tipo fruta que irá aparecer. Por padrão, no começo do jogo, a primeira fruta renderizada na tela será normal  
+    fruit_type = fruit
     # Loop principal: processa entrada, atualiza estado e renderiza a cena.
     while rodando:
 
@@ -168,12 +174,17 @@ def executar_jogo():
                 TAMANHO_PIXEL,
                 TAMANHO_PIXEL,
             ) 
-            if verificar_colisao(rect_prox_cabeça,fruit["rect"]):
+
+            colidiu = verificar_colisao(rect_prox_cabeça, fruit_type["rect"])
+
+            # Deve checar para ver se a fruta da vez não especial. Caso seja não deve crescer
+            # o fruit_type["imagem"] é comparado e nn o rect, pois 
+            if colidiu and fruit_type["imagem"] != especial_fruit["imagem"]:
                 crescer = True
             else:
                 crescer = False
 
-            cobrinha = movimento_cobrinha(cobrinha, direçao,crescer)
+            cobrinha = movimento_cobrinha(cobrinha, direçao, crescer)
             
             # verificação se colidiu com o próprio 
             cabeca = cobrinha[0]
@@ -195,20 +206,35 @@ def executar_jogo():
         # Verificação de colisão com a fruta
         if verificar_colisao(rect_cabeca, fruit["rect"]):
             pontos = calcular_pontos(pontos, 10)
-            som_comer.play()
+
+                
 
             # A função usa a largura e altura da tela para gerar as coordenadas, portanto não tem necessidade de verificar se essas posições estão dentro da área da tela. 
             # Além disso, a posição aleátoria não deixa óbvio onde a próxima fruta irá aparecer
             x, y = gerar_posicao_aleatoria(LARGURA_TELA, ALTURA_TELA, TAMANHO_PIXEL, cobrinha)
+            
+            is_especial = sera_fruta_especial()
 
-            fruit["rect"].x = x
-            fruit["rect"].y = y
+            # Verifica se a próxima fruta que será gerada será uma fruta especial. Caso sim, deve-se capturar o tempo em que a fruta 
+            # foi criada para calcular o tempo em que a fruta aparece na tela. Na regra, deverá ser por 3 segundos
+            if is_especial:
+                tempo_fruta_especial_criada = pygame.time.get_ticks()
+                fruit_type = especial_fruit
+            else:
+                fruit_type = fruit
+                
+            
+            fruit_type["rect"].x = x
+            fruit_type["rect"].y = y
+
+      
 
         # Verificação de colisão da cobra com as bordas 
         if verificar_colisao_borda(rect_cabeca):
-            estado = "game_over"
             som_game_over.play()
             pygame.mixer.music.stop()
+            estado = "game_over"
+
 
         # Regras de fim de jogo, recorde e atualiza ranking
         if jogador_perdeu(vidas):
@@ -227,8 +253,17 @@ def executar_jogo():
 
         tela.fill(CINZA)
 
+        
         # Desenhando os elementos na tela passando a imagem e o rect de cada dicionário
-        tela.blit(fruit["imagem"], fruit["rect"])
+        
+        if fruit_type == especial_fruit:
+            tempo_atual = pygame.time.get_ticks()
+
+            # Se passaram 3 segundos (3000 milisegundos), desativa o evento
+            if tempo_atual - tempo_fruta_especial_criada >= 3000:
+                fruit_type = fruit
+                
+        tela.blit(fruit_type["imagem"], fruit_type["rect"])
 
         # Desenha a pontuação na tela
         texto = fonte.render(f"Pontuação: {pontos}",True,(139,0,0))
