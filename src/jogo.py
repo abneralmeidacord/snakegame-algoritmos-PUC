@@ -26,6 +26,7 @@ from src.funcoes import (
     gerar_posicao_aleatoria,
     verificar_colisao_borda,
     tela_game_over,
+    tela_inicial,
     sera_fruta_especial
 )
 from src.sprites import pegar_sprite
@@ -40,7 +41,9 @@ from src.dados import (
 
 NOME = "Nome Temporário 30"
 
-def executar_jogo():
+
+
+def executar_jogo(estado):
     """Executa o loop principal do jogo e controla estado, colisões e pontuação."""
     pygame.init()
     
@@ -50,7 +53,7 @@ def executar_jogo():
 
     relogio = pygame.time.Clock()
     rodando = True
-    estado = "jogando"
+    estado = estado
 
     # 1. Carregando as imagens recortadas do Spritesheet e a cobrinha criada, com o pygame.draw
     
@@ -111,6 +114,25 @@ def executar_jogo():
 
         relogio.tick(FPS)
 
+
+        if estado == "inicio":
+            tela_inicial(tela, pontos)
+
+            for evento in pygame.event.get():
+                if evento.type == pygame.QUIT:
+                    rodando = False
+
+                elif evento.type == pygame.KEYDOWN:
+                    if evento.key == pygame.K_1:
+                        estado_game = "jogando"
+                        executar_jogo(estado_game)
+                        return
+
+                    elif evento.key == pygame.K_ESCAPE:
+                        rodando = False
+
+            continue
+
         if estado == "game_over":
             tela_game_over(tela, pontos)
 
@@ -120,7 +142,8 @@ def executar_jogo():
 
                 elif evento.type == pygame.KEYDOWN:
                     if evento.key == pygame.K_r:
-                        executar_jogo()
+                        estado_game = "jogando"
+                        executar_jogo(estado_game)
                         return
 
                     elif evento.key == pygame.K_ESCAPE:

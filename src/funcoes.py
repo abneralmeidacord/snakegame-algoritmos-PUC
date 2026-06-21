@@ -172,9 +172,9 @@ def tela_inicial(tela, pontos): #Vou usar de referência para fazer a tela inici
 
     # Título
     titulo = fonte_titulo.render(
-        "GAME OVER",
+        "🔥 COBRINHA.ZIP 😝🤟",
         True,
-        (220, 20, 60)
+        (220, 255, 255)
     )
 
     rect_titulo = titulo.get_rect(
@@ -183,36 +183,23 @@ def tela_inicial(tela, pontos): #Vou usar de referência para fazer a tela inici
 
     tela.blit(titulo, rect_titulo)
 
-    # Pontuação
-    texto_score = fonte_texto.render(
-        f"Pontuação: {pontos}",
-        True,
-        (255, 255, 255)
-    )
-
-    rect_score = texto_score.get_rect(
-        center=(LARGURA_TELA // 2, 280)
-    )
-
-    tela.blit(texto_score, rect_score)
-
     # Botões
-    reiniciar = fonte_texto.render(
-        "[ R ] Reiniciar",
+    iniciar = fonte_texto.render(
+        "[ 1 ] Iniciar",
         True,
         (255, 255, 255)
     )
 
-    rect_reiniciar = reiniciar.get_rect(
+    rect_iniciar = iniciar.get_rect(
         center=(LARGURA_TELA // 2, 370)
     )
 
-    tela.blit(reiniciar, rect_reiniciar)
+    tela.blit(iniciar, rect_iniciar)
 
     sair = fonte_texto.render(
         "[ ESC ] Sair",
         True,
-        (255, 255, 255)
+        (0, 0, 0)
     )
 
     rect_sair = sair.get_rect(
