@@ -152,73 +152,74 @@ def verificar_colisao_proprio_corpo(cobrinha):
 
 def sera_fruta_especial():
     return random.choices([True, False], weights=[10, 90], k=1)[0] # há uma chance de 1/10 ou 10% de uma fruta aparecer na tela (peso de True = 10)
-def tela_inicial(tela, pontos):
+def tela_inicial(tela):
 
     fonte_titulo = pygame.font.Font(None, 75)
     fonte_texto = pygame.font.Font(None, 40)
 
-    # Fundo escurecido
-    overlay = pygame.Surface((LARGURA_TELA, ALTURA_TELA))
-    overlay.set_alpha(180)
-    overlay.fill((0, 0, 0))
-    tela.blit(overlay, (0, 0))
+    rodando = True
 
-    # Caixa central
-    caixa = pygame.Rect(150, 120, 500, 380)
-    caixa.center = (LARGURA_TELA // 2, ALTURA_TELA // 2)
-    pygame.draw.rect(tela, (25, 25, 25), caixa, border_radius=15)
-    pygame.draw.rect(tela, (255, 255, 255), caixa, 3, border_radius=15)
+    while rodando:
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                return
+            if evento.type == pygame.KEYDOWN:
+                if evento.key == pygame.K_1:
+                    rodando = False
 
-    # Título
-    titulo = fonte_titulo.render(
-        "GAME OVER",
-        True,
-        (220, 20, 60)
-    )
+                if evento.key == pygame.K_ESCAPE:
+                    pygame.quit()
+                    return
+        
+        # Fundo escurecido
+        overlay = pygame.Surface((LARGURA_TELA, ALTURA_TELA))
+        overlay.set_alpha(180)
+        overlay.fill((0, 0, 0))
+        tela.blit(overlay, (0, 0))
 
-    rect_titulo = titulo.get_rect(
-        center=(LARGURA_TELA // 2, 200)
-    )
+        # Caixa central
+        caixa = pygame.Rect(150, 120, 500, 380)
+        caixa.center = (LARGURA_TELA // 2, ALTURA_TELA // 2)
+        pygame.draw.rect(tela, (25, 25, 25), caixa, border_radius=15)
+        pygame.draw.rect(tela, (255, 255, 255), caixa, 3, border_radius=15)
 
-    tela.blit(titulo, rect_titulo)
+        # Título
+        titulo = fonte_titulo.render(
+            "COBRINHA.ZIP",
+            True,
+            (220, 20, 60)
+        )
 
-    # Pontuação
-    texto_score = fonte_texto.render(
-        f"Pontuação: {pontos}",
-        True,
-        (255, 255, 255)
-    )
+        rect_titulo = titulo.get_rect(
+            center=(LARGURA_TELA // 2, 200)
+        )
 
-    rect_score = texto_score.get_rect(
-        center=(LARGURA_TELA // 2, 280)
-    )
+        tela.blit(titulo, rect_titulo)
 
-    tela.blit(texto_score, rect_score)
+        # Botões
+        jogar = fonte_texto.render(
+            "[ 1 ] JOGAR",
+            True,
+            (255, 255, 255)
+        )
 
-    # Botões
-    reiniciar = fonte_texto.render(
-        "[ R ] Reiniciar",
-        True,
-        (255, 255, 255)
-    )
+        rect_jogar = jogar.get_rect(
+            center=(LARGURA_TELA // 2, 370)
+        )
 
-    rect_reiniciar = reiniciar.get_rect(
-        center=(LARGURA_TELA // 2, 370)
-    )
+        tela.blit(jogar, rect_jogar)
 
-    tela.blit(reiniciar, rect_reiniciar)
+        sair = fonte_texto.render(
+            "[ ESC ] Sair",
+            True,
+            (255, 255, 255)
+        )
 
-    sair = fonte_texto.render(
-        "[ ESC ] Sair",
-        True,
-        (255, 255, 255)
-    )
+        rect_sair = sair.get_rect(
+            center=(LARGURA_TELA // 2, 430)
+        )
 
-    rect_sair = sair.get_rect(
-        center=(LARGURA_TELA // 2, 430)
-    )
+        tela.blit(sair, rect_sair)
 
-    tela.blit(sair, rect_sair)
-
-    pygame.display.flip()
+        pygame.display.flip()
 

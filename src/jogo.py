@@ -40,6 +40,7 @@ from src.config import(
     CAMINHO_SOM_COMER,
     CAMINHO_MUSICA_FUNDO
 )
+from src.funcoes import tela_inicial
 # TO DO: Criar tel para colocar o nome
 
 NOME = "Nome Temporário 30"
@@ -61,6 +62,7 @@ def executar_jogo():
 
     tela = pygame.display.set_mode((LARGURA_TELA, ALTURA_TELA))
     pygame.display.set_caption(TITULO_JOGO)
+    tela_inicial(tela)
 
     relogio = pygame.time.Clock()
     rodando = True
