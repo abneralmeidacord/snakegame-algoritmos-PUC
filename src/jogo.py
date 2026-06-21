@@ -56,7 +56,7 @@ def executar_jogo():
 
     #carrega a musica de fundo
     pygame.mixer.music.load(CAMINHO_MUSICA_FUNDO)
-    pygame.mixer.music.set_volume(0.3)
+    pygame.mixer.music.set_volume(0.2)
     pygame.mixer.music.play(-1)
 
     tela = pygame.display.set_mode((LARGURA_TELA, ALTURA_TELA))
@@ -205,6 +205,7 @@ def executar_jogo():
 
         # Verificação de colisão com a fruta
         if verificar_colisao(rect_cabeca, fruit["rect"]):
+            som_comer.play()
             pontos = calcular_pontos(pontos, 10)
 
                 
