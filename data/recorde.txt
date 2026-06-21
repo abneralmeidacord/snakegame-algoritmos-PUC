@@ -1,3 +1,2 @@
 nome,pontucao
-Nome Temporário 1,40
 Abner 30,490
