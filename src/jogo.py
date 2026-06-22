@@ -26,8 +26,10 @@ from src.funcoes import (
     gerar_posicao_aleatoria,
     verificar_colisao_borda,
     tela_game_over,
+    sera_fruta_especial,
     tela_inicial,
-    sera_fruta_especial
+    tocar_musica_jogo,
+    tocar_musica_tela_inicial
 )
 from src.sprites import pegar_sprite
 from src.dados import (
@@ -36,20 +38,33 @@ from src.dados import (
     salvar_ranking,
     carregar_ranking
 )
-
+from src.config import(
+    CAMINHO_SOM_GAME_OVER,
+    CAMINHO_SOM_COMER,
+)
+from src.funcoes import tela_inicial
 # TO DO: Criar tel para colocar o nome
 
 NOME = "Nome Temporário 30"
 
-
-
-def executar_jogo(estado):
+def executar_jogo(mostrar_menu=True):
     """Executa o loop principal do jogo e controla estado, colisões e pontuação."""
-    pygame.init()
     
+    pygame.init()
+    pygame.mixer.init()
+    #carrega os efeitos sonoros
+    som_comer = pygame.mixer.Sound(CAMINHO_SOM_COMER)
+    som_game_over = pygame.mixer.Sound(CAMINHO_SOM_GAME_OVER)
+    som_comer.set_volume(0.5)
+    som_game_over.set_volume(0.7)
 
     tela = pygame.display.set_mode((LARGURA_TELA, ALTURA_TELA))
     pygame.display.set_caption(TITULO_JOGO)
+    
+    if mostrar_menu:
+        tela_inicial(tela)
+        pygame.mixer.music.stop()
+        tocar_musica_jogo()
 
     relogio = pygame.time.Clock()
     rodando = True
@@ -142,8 +157,7 @@ def executar_jogo(estado):
 
                 elif evento.type == pygame.KEYDOWN:
                     if evento.key == pygame.K_r:
-                        estado_game = "jogando"
-                        executar_jogo(estado_game)
+                        executar_jogo(False)
                         return
 
                     elif evento.key == pygame.K_ESCAPE:
@@ -200,6 +214,8 @@ def executar_jogo(estado):
             corpo = cobrinha[1:]
 
             if cabeca in corpo:
+                som_game_over.play()
+                pygame.mixer.music.stop()
                 estado = "game_over"
 
         cabeca_x, cabeca_y = cobrinha[0]
@@ -211,16 +227,9 @@ def executar_jogo(estado):
         )
 
         # Verificação de colisão com a fruta
-        if verificar_colisao(rect_cabeca, fruit_type["rect"]):
-
-            # Verifica se a colisão ocorreu com uma fruta especial para calcular pontos
-            if fruit_type == especial_fruit:
-                pontos = calcular_pontos(pontos, 50)
-                # Tamanho minimo da cobra = cabeça + 3 blocos de corpo + rabo 
-                if (len(cobrinha) > 5): 
-                    diminuir_cobrinha(cobrinha)
-            else:
-                pontos = calcular_pontos(pontos, 10)
+        if verificar_colisao(rect_cabeca, fruit["rect"]):
+            som_comer.play()
+            pontos = calcular_pontos(pontos, 10)
 
                 
 
@@ -246,10 +255,15 @@ def executar_jogo(estado):
 
         # Verificação de colisão da cobra com as bordas 
         if verificar_colisao_borda(rect_cabeca):
+            som_game_over.play()
+            pygame.mixer.music.stop()
             estado = "game_over"
+
 
         # Regras de fim de jogo, recorde e atualiza ranking
         if jogador_perdeu(vidas):
+            som_game_over.play()
+            pygame.mixer.music.stop()
             estado = "game_over"
 
         if NOME not in recorde.keys() or pontos > recorde[NOME]:

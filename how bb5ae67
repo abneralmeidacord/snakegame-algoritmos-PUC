@@ -1,0 +1,52 @@
+* [33m52a342d[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m adição da musica de fundo
+*   [33m73c0083[m adição de musica de fundo
+[32m|[m[33m\[m  
+[32m|[m * [33m51a8ddd[m limpando ranking
+[32m|[m * [33mc0ee4cd[m limpando ranking
+[32m|[m * [33mbb5ae67[m add comentário
+[32m|[m * [33m8d5440b[m resolvendo conflitos de código
+[32m|[m * [33m4f8c9af[m resolvendo conflitos de código
+[32m|[m * [33m2e62ba4[m feat: add special fruit with bonus points and time limit
+* [33m|[m [33m36c44f4[m adição de efeito sonoro ao pegar a fruta e no game over
+[33m|[m[33m/[m  
+* [33m128e1fb[m fix: align fruit spawn positions with snake grid
+*   [33m259b74d[m Merge branch 'main'
+[34m|[m[35m\[m  
+[34m|[m * [33m776a47a[m atualizacao reademe ##Como executar git repositorio e cd nome da pasta
+[34m|[m * [33m158af3f[m ajuste no readme ##controles
+[34m|[m * [33m2877fe3[m Atualização do readme, com funcionalidades inplementadas até agora, testes implementados e proximas funcionalidades que serão feitas, alteração na techa ESC em comtroles, onde ESC sai do jogo e R reinicia o jogo
+[34m|[m * [33m9652b85[m Correção de bugs
+[34m|[m *   [33m2026ca7[m Tela de reinicio
+[34m|[m [36m|[m[1;31m\[m  
+[34m|[m * [1;31m|[m [33m124655b[m Tela de reinicio
+* [1;31m|[m [1;31m|[m [33me16bcb7[m fix: correct random position generation for snake food
+[1;31m|[m [1;31m|[m[1;31m/[m  
+[1;31m|[m[1;31m/[m[1;31m|[m   
+* [1;31m|[m   [33m366db39[m Merge branch 'main'
+[1;32m|[m[1;33m\[m [1;31m\[m  
+[1;32m|[m * [1;31m|[m [33m2dd722f[m Add testes Abner
+[1;32m|[m [1;31m|[m[1;31m/[m  
+* [1;31m|[m [33m71345ee[m chore: add gitignore to exclude pycache files
+* [1;31m|[m [33mf409224[m test: add tests for save and load record and ranking functions
+* [1;31m|[m [33m0a18f89[m fix: display high score correctly in window title
+[1;31m|[m[1;31m/[m  
+* [33m9785d1e[m Adicionando colisão com o próprio corpo
+* [33ma88a272[m exibição da pontuação na tela
+* [33mf7e10d1[m feat: add top 3 ranking system and player record tracking
+* [33mfa50abb[m fix: colisão da cabeça da cobra com as extremidades da tela
+*   [33m684aa5c[m Merge branch 'main' of https://github.com/abneralmeidacord/snakegame-algoritmos-PUC
+[1;34m|[m[1;35m\[m  
+[1;34m|[m * [33m26c00da[m fix: collision check with borders in jogo.py
+* [1;35m|[m [33m2a490cd[m adicionei a verificação da colisão com a fruta e alterei a função movimento_cobrinha para a implementação do crescimento da cobrinha
+[1;35m|[m[1;35m/[m  
+*   [33mb425973[m Merge branch 'main' of https://github.com/abneralmeidacord/snakegame-algoritmos-PUC
+[1;36m|[m[31m\[m  
+[1;36m|[m * [33m6824432[m movimentação da cobrinha e a mudança de sprite pronta [ABNER - SPRINT 1 - OK]
+[1;36m|[m * [33m78e0579[m comecei a cobrinha e o movimento, agr só tirar o erro ;-;
+* [31m|[m [33m5d4fd06[m Funcionalidade: adicionar fim de jogo ao tocar as extremidades
+[31m|[m[31m/[m  
+* [33m3bd3573[m feat: add random fruit spawning
+* [33m1cdcac9[m docs: update game name
+* [33m1ca2a64[m atualizando o readme.md
+* [33mb3b75e1[m trazendo template - para o repositório
+* [33m4d254de[m Initial commit

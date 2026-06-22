@@ -1,3 +1,4 @@
 nome,pontucao
 Abner 30,490
 Nome Temporário 30,90
+Nome Temporário 30,180

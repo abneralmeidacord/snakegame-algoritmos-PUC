@@ -13,3 +13,7 @@ CINZA = (212,212,212)
 CAMINHO_RECORDE = "data/recorde.txt"
 CAMINHO_RANKING = "data/ranking.txt"
 CAMINHO_SPRITES = "assets/imagens/spritesheet.bmp"
+CAMINHO_SOM_COMER = "assets/sons/pegou_fruta.wav"
+CAMINHO_SOM_GAME_OVER = "assets/sons/loser.wav"
+CAMINHO_MUSICA_FUNDO = "assets/sons/jogo.wav"
+CAMINHO_MUSICA_TELA_INICIAL = "assets/sons/menu.wav"
