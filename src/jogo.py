@@ -47,8 +47,11 @@ from src.funcoes import tela_inicial
 
 NOME = "Nome Temporário 30"
 
+
 def executar_jogo(mostrar_menu=True):
     """Executa o loop principal do jogo e controla estado, colisões e pontuação."""
+    
+    estado = "jogando"
     
     pygame.init()
     pygame.mixer.init()
@@ -68,7 +71,6 @@ def executar_jogo(mostrar_menu=True):
 
     relogio = pygame.time.Clock()
     rodando = True
-    estado = estado
 
     # 1. Carregando as imagens recortadas do Spritesheet e a cobrinha criada, com o pygame.draw
     
@@ -129,24 +131,6 @@ def executar_jogo(mostrar_menu=True):
 
         relogio.tick(FPS)
 
-
-        if estado == "inicio":
-            tela_inicial(tela, pontos)
-
-            for evento in pygame.event.get():
-                if evento.type == pygame.QUIT:
-                    rodando = False
-
-                elif evento.type == pygame.KEYDOWN:
-                    if evento.key == pygame.K_1:
-                        estado_game = "jogando"
-                        executar_jogo(estado_game)
-                        return
-
-                    elif evento.key == pygame.K_ESCAPE:
-                        rodando = False
-
-            continue
 
         if estado == "game_over":
             tela_game_over(tela, pontos)
