@@ -26,13 +26,13 @@ def sprite_cobrinha(size):
     return {"cabeça": cabeça, "corpo": corpo, "rabo": rabo}
 
 def girar_cobrinha(img, dir):
-    dx, dy = dir
+    dirX, dirY = dir
     
-    if dx > 0:
+    if dirX > 0:
         ang = 0
-    elif dx < 0 :
+    elif dirX < 0 :
         ang = 180
-    elif dy < 0:
+    elif dirY < 0:
         ang = 90
     else:
         ang =-90

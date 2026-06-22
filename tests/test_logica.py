@@ -1,4 +1,4 @@
-from src.funcoes import calcular_pontos, jogador_perdeu, limitar_valor, verificar_colisao_proprio_corpo
+from src.funcoes import (calcular_pontos, jogador_perdeu, limitar_valor, verificar_colisao_proprio_corpo, adicionar_caractere_nome, apagar_caractere_nome, pode_iniciar_jogo,)
 from src.cobrinha import movimento_cobrinha, diminuir_cobrinha
 from src.dados import carregar_ranking, salvar_ranking, carregar_recorde, salvar_recorde
 
@@ -208,3 +208,68 @@ def test_fruta_especial_soma_50_pontos_e_nao_10():
  
     assert pontos == 50
     assert pontos != calcular_pontos(0, 10)
+
+def test_adicionar_caractere_nome_converte_para_maiusculo():
+    """Deve salvar o caractere do nome em letra maiuscula."""
+    resultado = adicionar_caractere_nome("", "a")
+
+    assert resultado == "A"
+
+
+def test_adicionar_caractere_nome_aceita_letras_e_numeros():
+    """Deve aceitar letras e numeros no nome do jogador."""
+    nome = ""
+
+    nome = adicionar_caractere_nome(nome, "a")
+    nome = adicionar_caractere_nome(nome, "b")
+    nome = adicionar_caractere_nome(nome, "1")
+    nome = adicionar_caractere_nome(nome, "2")
+
+    assert nome == "AB12"
+
+
+def test_adicionar_caractere_nome_limita_ate_4_caracteres():
+    """Nao deve permitir que o nome tenha mais de 4 caracteres."""
+    nome = ""
+
+    nome = adicionar_caractere_nome(nome, "a")
+    nome = adicionar_caractere_nome(nome, "b")
+    nome = adicionar_caractere_nome(nome, "n")
+    nome = adicionar_caractere_nome(nome, "e")
+    nome = adicionar_caractere_nome(nome, "r")
+
+    assert nome == "ABNE"
+    assert len(nome) == 4
+
+
+def test_adicionar_caractere_nome_ignora_simbolos():
+    """Nao deve aceitar simbolos no nome do jogador."""
+    nome = "AB"
+
+    resultado = adicionar_caractere_nome(nome, "@")
+
+    assert resultado == "AB"
+
+
+def test_apagar_caractere_nome():
+    """Deve apagar o ultimo caractere do nome digitado."""
+    resultado = apagar_caractere_nome("ABN")
+
+    assert resultado == "AB"
+
+
+def test_apagar_caractere_nome_vazio():
+    """Deve continuar vazio se tentar apagar um nome vazio."""
+    resultado = apagar_caractere_nome("")
+
+    assert resultado == ""
+
+
+def test_pode_iniciar_jogo_com_nome_digitado():
+    """Deve permitir iniciar o jogo quando o jogador digitou um nome."""
+    assert pode_iniciar_jogo("ABN") is True
+
+
+def test_nao_pode_iniciar_jogo_sem_nome_digitado():
+    """Nao deve permitir iniciar o jogo quando o nome esta vazio."""
+    assert pode_iniciar_jogo("") is False

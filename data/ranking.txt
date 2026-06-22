@@ -2,7 +2,6 @@ nome,pontucao
 <<<<<<< HEAD
 Nome Temporário 30,140
 =======
-Abner 30,490
-Nome Temporário 30,90
-Nome Temporário 30,180
->>>>>>> 4f1e16077986a0a0115ed1464d751f3c26ce7359
+Nome Temporário 30,220
+ABN,50
+MAYR,20>>>>>>> 4f1e16077986a0a0115ed1464d751f3c26ce7359
