@@ -42,13 +42,8 @@ from src.config import(
     CAMINHO_SOM_GAME_OVER,
     CAMINHO_SOM_COMER,
 )
-from src.funcoes import tela_inicial
-# TO DO: Criar tel para colocar o nome
 
-NOME = "Nome Temporário 30"
-
-
-def executar_jogo(mostrar_menu=True):
+def executar_jogo(mostrar_menu=True, nome_jogador=None):
     """Executa o loop principal do jogo e controla estado, colisões e pontuação."""
     
     estado = "jogando"
@@ -66,9 +61,16 @@ def executar_jogo(mostrar_menu=True):
     pygame.display.set_caption(TITULO_JOGO)
     
     if mostrar_menu:
-        tela_inicial(tela)
+        nome_jogador = tela_inicial(tela)
+
+        if nome_jogador is None:
+            pygame.quit()
+            return
+
         pygame.mixer.music.stop()
         tocar_musica_jogo()
+    elif nome_jogador is None:
+        nome_jogador = "JOGD"
 
     relogio = pygame.time.Clock()
     rodando = True
@@ -142,7 +144,7 @@ def executar_jogo(mostrar_menu=True):
 
                 elif evento.type == pygame.KEYDOWN:
                     if evento.key == pygame.K_r:
-                        executar_jogo(False)
+                        executar_jogo(False, nome_jogador)
                         return
 
                     elif evento.key == pygame.K_ESCAPE:
@@ -251,14 +253,12 @@ def executar_jogo(mostrar_menu=True):
             pygame.mixer.music.stop()
             estado = "game_over"
 
-        if NOME not in recorde.keys() or pontos > recorde[NOME]:
-            recorde[NOME] = pontos
-            salvar_recorde(CAMINHO_RECORDE, recorde, NOME, pontos)
-            salvar_ranking(CAMINHO_RANKING, ranking, NOME, pontos)
+        if nome_jogador not in recorde.keys() or pontos > recorde[nome_jogador]:
+            recorde[nome_jogador] = pontos
+            salvar_recorde(CAMINHO_RECORDE, recorde, nome_jogador, pontos)
+            salvar_ranking(CAMINHO_RANKING, ranking, nome_jogador, pontos)
 
-        pygame.display.set_caption(
-            f"{TITULO_JOGO} | Pontos: {pontos} | Recorde: {recorde[NOME]} | Vidas: {vidas}"
-        )
+        pygame.display.set_caption(f"{TITULO_JOGO} | Pontos: {pontos} | Recorde: {recorde[nome_jogador]} | Vidas: {vidas}")
 
         tela.fill(CINZA)
 

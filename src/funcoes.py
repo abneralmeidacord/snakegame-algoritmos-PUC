@@ -158,27 +158,62 @@ def verificar_colisao_proprio_corpo(cobrinha):
 def sera_fruta_especial():
     return random.choices([True, False], weights=[10, 90], k=1)[0] # há uma chance de 1/10 ou 10% de uma fruta aparecer na tela (peso de True = 10)
 
+def adicionar_caractere_nome(nome_atual, caractere):
+    """Adiciona um caractere ao nome, respeitando o limite de 4 caracteres."""
+    if len(nome_atual) >= 4:
+        return nome_atual
+
+    if caractere.isalnum():
+        return nome_atual + caractere.upper()
+
+    return nome_atual
+
+
+def apagar_caractere_nome(nome_atual):
+    """Remove o ultimo caractere do nome digitado."""
+    return nome_atual[:-1]
+
+
+def pode_iniciar_jogo(nome_digitado):
+    """Verifica se o jogador pode iniciar o jogo com o nome digitado."""
+    return nome_digitado != ""
+
 def tela_inicial(tela):
     tocar_musica_tela_inicial()
-    
+
     fonte_titulo = pygame.font.Font(None, 75)
     fonte_texto = pygame.font.Font(None, 40)
+    fonte_mensagem = pygame.font.Font(None, 28)
+    fonte_ranking = pygame.font.Font(None, 30)
 
-    rodando = True
+    nome_digitado = ""
+    mensagem = "Digite seu nome com ate 4 letras/numeros"
 
-    while rodando:
-       
+    while True:
+        tela.fill((0, 0, 0))
+
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
-                return
-            if evento.type == pygame.KEYDOWN:
-                if evento.key == pygame.K_1:
-                    rodando = False
+                return None
 
+            if evento.type == pygame.KEYDOWN:
                 if evento.key == pygame.K_ESCAPE:
                     pygame.quit()
-                    return
-        
+                    return None
+
+                elif evento.key == pygame.K_BACKSPACE:
+                    nome_digitado = apagar_caractere_nome(nome_digitado)
+
+                elif evento.key == pygame.K_1 or evento.key == pygame.K_KP1:
+                    if pode_iniciar_jogo(nome_digitado):
+                        return nome_digitado
+
+                    mensagem = "Digite um nome antes de iniciar"
+
+                else:
+                    nome_digitado = adicionar_caractere_nome(nome_digitado, evento.unicode)
+                    mensagem = "Digite seu nome com ate 4 letras/numeros"
+
         # Fundo escurecido
         overlay = pygame.Surface((LARGURA_TELA, ALTURA_TELA))
         overlay.set_alpha(180)
@@ -186,8 +221,9 @@ def tela_inicial(tela):
         tela.blit(overlay, (0, 0))
 
         # Caixa central
-        caixa = pygame.Rect(150, 120, 500, 380)
+        caixa = pygame.Rect(0, 0, 620, 520)
         caixa.center = (LARGURA_TELA // 2, ALTURA_TELA // 2)
+
         pygame.draw.rect(tela, (25, 25, 25), caixa, border_radius=15)
         pygame.draw.rect(tela, (255, 255, 255), caixa, 3, border_radius=15)
 
@@ -199,12 +235,52 @@ def tela_inicial(tela):
         )
 
         rect_titulo = titulo.get_rect(
-            center=(LARGURA_TELA // 2, 170)
+            center=(caixa.centerx, caixa.top + 60)
         )
 
         tela.blit(titulo, rect_titulo)
 
-        # Botões
+        # Mensagem do input
+        instrucao = fonte_mensagem.render(
+            mensagem,
+            True,
+            (255, 255, 255)
+        )
+
+        rect_instrucao = instrucao.get_rect(
+            center=(caixa.centerx, caixa.top + 140)
+        )
+
+        tela.blit(instrucao, rect_instrucao)
+
+        # Caixa do nome
+        caixa_nome = pygame.Rect(0, 0, 220, 50)
+        caixa_nome.center = (caixa.centerx, caixa.top + 195)
+
+        pygame.draw.rect(tela, (255, 255, 255), caixa_nome, border_radius=8)
+        pygame.draw.rect(tela, (220, 20, 60), caixa_nome, 3, border_radius=8)
+
+        texto_nome = nome_digitado
+
+        if texto_nome == "":
+            texto_nome = "NOME"
+
+        nome_renderizado = fonte_texto.render(
+            texto_nome,
+            True,
+            (25, 25, 25)
+        )
+
+        rect_nome = nome_renderizado.get_rect(
+            center=caixa_nome.center
+        )
+
+        tela.blit(nome_renderizado, rect_nome)
+
+        # Ranking
+        exibir_ranking(tela, fonte_ranking, caixa.top + 255)
+
+        # Botão jogar
         jogar = fonte_texto.render(
             "[ 1 ] JOGAR",
             True,
@@ -212,11 +288,12 @@ def tela_inicial(tela):
         )
 
         rect_jogar = jogar.get_rect(
-            center=(LARGURA_TELA // 2, 390)
+            center=(caixa.centerx, caixa.bottom - 85)
         )
 
         tela.blit(jogar, rect_jogar)
 
+        # Botão sair
         sair = fonte_texto.render(
             "[ ESC ] Sair",
             True,
@@ -224,12 +301,10 @@ def tela_inicial(tela):
         )
 
         rect_sair = sair.get_rect(
-            center=(LARGURA_TELA // 2, 430)
+            center=(caixa.centerx, caixa.bottom - 40)
         )
 
         tela.blit(sair, rect_sair)
-
-        exibir_ranking(tela, fonte_texto,230)
 
         pygame.display.flip()
 

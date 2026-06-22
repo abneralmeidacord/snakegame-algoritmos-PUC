@@ -1,4 +1,4 @@
 nome,pontucao
-Abner 30,490
-Nome Temporário 30,90
-Nome Temporário 30,180
+Nome Temporário 30,220
+ABN,50
+MAYR,20
