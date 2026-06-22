@@ -9,6 +9,10 @@ Nome Temporário 30,220
 Abner 30,490
 ABN,50
 MAYR,20
+<<<<<<< HEAD
 MACL,150
 LARI,100
 ABNR,260
+=======
+LELE,60
+>>>>>>> 9d397b2c2ff9091289c7315f0a3ed10324a58584

@@ -1,4 +1,9 @@
 nome,pontucao
+<<<<<<< HEAD
 ABNR,260
 MACL,150
 Nome Temporário 30,140
+=======
+Nome Temporário 30,140
+LELE,60
+>>>>>>> 9d397b2c2ff9091289c7315f0a3ed10324a58584
