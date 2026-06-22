@@ -1,15 +1,14 @@
 nome,pontucao
-<<<<<<< HEAD
 Nome Temporário,100
 Nome Temporário 2,30
 Nome Temporário 1,40
 Nome Temporário 11,40
 Nome Temporário 9,30
 Nome Temporário 3,30
-Nome Temporário 30,140
-=======
-Abner 30,490
 Nome Temporário 30,220
+Abner 30,490
 ABN,50
 MAYR,20
-LARI,10>>>>>>> 4f1e16077986a0a0115ed1464d751f3c26ce7359
+MACL,150
+LARI,100
+ABNR,260
