@@ -52,6 +52,7 @@ def executar_jogo(mostrar_menu=True):
     """Executa o loop principal do jogo e controla estado, colisões e pontuação."""
     
     estado = "jogando"
+    pausado = False
     
     pygame.init()
     pygame.mixer.init()
@@ -155,6 +156,10 @@ def executar_jogo(mostrar_menu=True):
                 rodando = False
 
             if evento.type == pygame.KEYDOWN:
+
+                if evento.key == pygame.K_p:
+                    pausado = not pausado
+
                 if evento.key == pygame.K_LEFT and direçao != (TAMANHO_PIXEL, 0):
                     proxima_direçao = (-TAMANHO_PIXEL, 0)
 
@@ -261,6 +266,69 @@ def executar_jogo(mostrar_menu=True):
         )
 
         tela.fill(CINZA)
+
+        fonte_info = pygame.font.Font(None, 30)
+
+        texto_pause_info = fonte_info.render("Pressione P para pausar", True, (255, 255, 255))
+
+        tela.blit(texto_pause_info, (20, 20))
+
+        # =========================
+        # TELA DE PAUSE
+        # =========================
+        if pausado:
+
+            # cria uma superfície transparente preta
+            overlay = pygame.Surface((LARGURA_TELA, ALTURA_TELA), pygame.SRCALPHA)
+            overlay.fill((0, 0, 0, 50))
+
+            tela.blit(overlay, (0, 0))
+
+            fonte_pause = pygame.font.Font(None, 80)
+            fonte_opcoes = pygame.font.Font(None, 50)
+
+            # texto PAUSADO
+            texto_pause = fonte_pause.render("PAUSADO", True, (255, 255, 255))
+            rect_pause = texto_pause.get_rect(center=(LARGURA_TELA // 2, ALTURA_TELA // 2 - 100))
+
+            tela.blit(texto_pause, rect_pause)
+
+            # opções
+            texto_voltar = fonte_opcoes.render("Pressione P para voltar", True, (255, 255, 255))
+            rect_voltar = texto_voltar.get_rect(center=(LARGURA_TELA // 2, ALTURA_TELA // 2))
+
+            tela.blit(texto_voltar, rect_voltar)
+
+            texto_sair = fonte_opcoes.render("ESC para sair", True, (255, 255, 255))
+            rect_sair = texto_sair.get_rect(center=(LARGURA_TELA // 2, ALTURA_TELA // 2 + 60))
+
+            tela.blit(texto_sair, rect_sair)
+
+            pygame.display.flip()
+
+            # verifica eventos enquanto pausado
+            while pausado:
+
+                for evento in pygame.event.get():
+
+                    if evento.type == pygame.QUIT:
+                        rodando = False
+                        pausado = False
+
+                    if evento.type == pygame.KEYDOWN:
+
+                        # volta ao jogo
+                        if evento.key == pygame.K_p:
+                            pausado = False
+
+                        # sai do jogo
+                        if evento.key == pygame.K_ESCAPE:
+                            rodando = False
+                            pausado = False
+
+                relogio.tick(FPS)
+
+            continue
 
         
         # Desenhando os elementos na tela passando a imagem e o rect de cada dicionário
