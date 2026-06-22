@@ -5,8 +5,4 @@ Nome Temporário 1,40
 Nome Temporário 11,40
 Nome Temporário 9,30
 Nome Temporário 3,30
-
-Nome Temporário 30,160
-
-Nome Temporário 30,100
-
+Nome Temporário 30,140
