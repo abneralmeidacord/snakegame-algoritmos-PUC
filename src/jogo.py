@@ -55,6 +55,7 @@ def executar_jogo(mostrar_menu=True):
     
     pygame.init()
     pygame.mixer.init()
+    tocar_musica_jogo()
     #carrega os efeitos sonoros
     som_comer = pygame.mixer.Sound(CAMINHO_SOM_COMER)
     som_game_over = pygame.mixer.Sound(CAMINHO_SOM_GAME_OVER)
