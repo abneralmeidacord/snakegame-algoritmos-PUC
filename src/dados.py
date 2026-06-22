@@ -58,7 +58,6 @@ def salvar_ranking(caminho_arquivo, ranking_atual, nome_user, pontuacao):
         for nome, pontos in ranking_ordenado.items():
             arquivo.write(f"\n{nome},{pontos}")
 
-    
 def carregar_ranking(caminho_arquivo):
     """Carrega o ranking salvo; retorna {} se não existir valor válido."""
     try:

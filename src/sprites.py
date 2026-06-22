@@ -24,6 +24,6 @@ def pegar_sprite(local_arquivo, x, y, width, height, scale=1):
     if scale != 1:
         novo_largura = int(width * scale)
         novo_altura = int(height * scale)
-        image = pygame.transform.scale(image, (novo_largura, novo_altura))
-        
+        image = pygame.transform.smoothscale(image, (novo_largura, novo_altura))
+
     return image
