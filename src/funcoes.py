@@ -188,6 +188,7 @@ def tela_inicial(tela):
 
     nome_digitado = ""
     mensagem = "Digite seu nome com ate 4 letras/numeros"
+    relogio = pygame.time.Clock()
 
     while True:
         tela.fill((0, 0, 0))
@@ -198,7 +199,6 @@ def tela_inicial(tela):
 
             if evento.type == pygame.KEYDOWN:
                 if evento.key == pygame.K_ESCAPE:
-                    pygame.quit()
                     return None
 
                 elif evento.key == pygame.K_BACKSPACE:
@@ -307,6 +307,7 @@ def tela_inicial(tela):
         tela.blit(sair, rect_sair)
 
         pygame.display.flip()
+        relogio.tick(FPS)
 
         
 def exibir_ranking(tela, fonte_texto, y_inicial):
@@ -339,8 +340,6 @@ def exibir_ranking(tela, fonte_texto, y_inicial):
             tela.blit(texto, rect_texto)
             y+=30
             
-
-        pygame.display.flip()
 
 def tocar_musica_tela_inicial():
     pygame.mixer.music.load(CAMINHO_MUSICA_TELA_INICIAL)
