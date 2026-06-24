@@ -47,14 +47,11 @@ Explique o que o jogador precisa fazer para vencer ou avançar no jogo.
 - Sistema de recorde
 - Sistema de ranking
 - Tela de game over com reinicio e sair
-
-## Próximas funcionalidades
-- escolha da cor da cobrinha
-- Tela inicial com cadastro do user e personalozação da cobrinha
+- Tela inicial com cadastro do user 
 - Sistema de pausa durante a partida
 - Frutas especiais com efeitos diferentes
-- Melhoria visual na interface do jogo
 - Exibição do ranking na tela do jogo
+- Trilha sonora e efeitos sonoros
 
 ## Testes realizados
 
