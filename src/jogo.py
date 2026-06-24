@@ -135,6 +135,7 @@ def executar_jogo(mostrar_menu=True, nome_jogador=None):
         }
 
     fruta_atual = criar_fruta("normal")
+    fruta_atual_2 = criar_fruta("normal")
 
     pontos = 0
     vidas = 1
@@ -243,6 +244,7 @@ def executar_jogo(mostrar_menu=True, nome_jogador=None):
             )
 
             comeu_fruta = verificar_colisao(rect_prox_cabeça, fruta_atual["rect"])
+            comeu_fruta_2 = verificar_colisao(rect_prox_cabeça, fruta_atual_2["rect"])
             crescer = comeu_fruta and fruta_atual["tipo"] == "normal"
 
             cobrinha = movimento_cobrinha(cobrinha, direçao, crescer)
@@ -265,6 +267,25 @@ def executar_jogo(mostrar_menu=True, nome_jogador=None):
                     tipo_proxima_fruta = "especial"
 
                 fruta_atual = criar_fruta(tipo_proxima_fruta)
+
+            if comeu_fruta_2:
+                som_comer.play()
+
+                if fruta_atual["tipo"] == "especial":
+                    pontos = calcular_pontos(pontos, 50)
+
+                    if len(cobrinha) > tamanho_minimo_cobrinha:
+                        cobrinha = diminuir_cobrinha(cobrinha)
+
+                else:
+                    pontos = calcular_pontos(pontos, 10)
+
+                tipo_proxima_fruta = "normal"
+
+                if sera_fruta_especial():
+                    tipo_proxima_fruta = "especial"
+
+                fruta_atual_2 = criar_fruta(tipo_proxima_fruta)
 
             cabeca = cobrinha[0]
             corpo = cobrinha[1:]
@@ -296,6 +317,8 @@ def executar_jogo(mostrar_menu=True, nome_jogador=None):
         )
 
         tela.blit(fruta_atual["imagem"], fruta_atual["rect"])
+
+        tela.blit(fruta_atual["imagem"], fruta_atual_2["rect"])
 
         texto = fonte.render(f"Pontuação: {pontos}", True, (139, 0, 0))
         retangulo_texto = texto.get_rect()

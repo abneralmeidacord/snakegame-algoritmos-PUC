@@ -1,4 +1,4 @@
 nome,pontucao
+LALA,510
 ABNR,260
 LARI,220
-MACL,150
