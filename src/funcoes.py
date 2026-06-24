@@ -156,7 +156,7 @@ def verificar_colisao_proprio_corpo(cobrinha):
     return cabeca in corpo
 
 def sera_fruta_especial():
-    return random.choices([True, False], weights=[10, 90], k=1)[0] # há uma chance de 1/10 ou 10% de uma fruta aparecer na tela (peso de True = 10)
+    return random.choices([True, False], weights=[60, 40], k=1)[0] # há uma chance de 1/10 ou 10% de uma fruta aparecer na tela (peso de True = 10)
 
 def adicionar_caractere_nome(nome_atual, caractere):
     """Adiciona um caractere ao nome, respeitando o limite de 4 caracteres."""
