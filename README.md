@@ -83,7 +83,6 @@ Informe as teclas ou comandos utilizados no jogo.
 
 ```bash
 git https://github.com/abneralmeidacord/snakegame-algoritmos-PUC.git
-cd src
 pip install -r requirements.txt
 python main.py
 ```
