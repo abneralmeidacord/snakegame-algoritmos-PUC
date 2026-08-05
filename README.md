@@ -1,4 +1,6 @@
 # 🔥 COBRINHA.ZIP 😝🤟
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/b81bbb67-cbde-45e3-9ab6-cc285900a4ac" />
+
 
 Projeto final da disciplina de Introdução a Algoritmos/Programação, desenvolvido com Python e Pygame.
 
